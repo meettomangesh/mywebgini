@@ -686,8 +686,8 @@ if (isset($users) && !empty($users)) {
                                     ?>
                                     <li class="">
                                         <div class="collapsible-header"><?php echo $val->enquiry_title . ' ' . (($val->status == 1) ? '<span class="task-cat teal">Open</span>' : '<span class="task-cat pink">Closed</span>'); ?>
-                                            <a href="javascript:editEnquiryForUtilizer(<?php echo $val->id;?>,<?php echo $user->id; ?>);" class="secondary-content"><i class="mdi-editor-border-color"></i></a>
-                                            <a href="javascript:viewEnquiryForUtilizer(<?php echo $val->id;?>,<?php echo $user->id; ?>);" class="secondary-content"><i class="mdi-action-launch"></i></a>
+                                            <a href="javascript:void(0)" data-is-provider-utilizer="utilizer" data-enquiry-id="<?php echo $val->id;?>" data-utilizer-id ="<?php echo $user->id; ?>" class="secondary-content edit-enquiry"><i class="mdi-editor-border-color"></i></a>
+                                            <a data-enquiry-id="<?php echo $val->id;?>" data-is-provider-utilizer="utilizer" data-utilizer-id ="<?php echo $user->id; ?>" href="javascript:void(0);" class="secondary-content view-enquiry"><i class="mdi-action-launch"></i></a>
                                         </div>
                                         <div class="collapsible-body" style="display: none;">
                                             <p><?php echo $val->enquiry_text; ?></p>

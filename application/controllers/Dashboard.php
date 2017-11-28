@@ -79,15 +79,16 @@ class Dashboard extends CI_Controller {
         $userId = $this->input->post('userId');
         $skillsets = $this->Model_signup->skillset_list();
         $data['skillsets'] = $skillsets;
-        $data['is_provider_utilizer'] = $is_provider_utilizer;
+        $data['is_provider_utilizer'] = $this->input->post('is_provider_utilizer');
         $data['user'] = $this->Model_users->getUserDataByProviderUtilizerId($userId, 'utilizer');
         $responseEnquiry = $this->load->view('ajax/getEditEnquiriesFormForUtilizer', $data, TRUE);
-        if ($result) {
-            $response['from'] = 'edit-enquiry';
+        if ($enquiryId) {
+            $response['from'] = 'edit-enquiry-form';
             $response['status'] = 'success';
             $response['editEnquiryForm'] = $responseEnquiry;
             $response['message'] = 'Enquiry added successfully.';
         }
+        $this->output->set_output(json_encode($response));
     }
 
 }

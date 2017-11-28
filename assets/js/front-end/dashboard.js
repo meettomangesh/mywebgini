@@ -1,25 +1,29 @@
 siteObjJs.frontend.dashboardJS = function () {
 
     var initializeListener = function () {
-        /* $('.submit-enquiry').click(function(){
-         $('#add-enquiry').submit();
-         //siteObjJs.validation.formValidateInit('#add-enquiry', handleAjaxRequest);
-         });*/
-        alert();
-        var editEnquiryForUtilizer = function (enquiryId, userId) {
+         $('.edit-enquiry').click(function(){
+            var enquiryId = $(this).attr('data-enquiry-id');
+            var userId = $(this).attr('data-utilizer-id');
+            var isProviderUtilizer = $(this).attr('data-is-provider-utilizer');
+         editEnquiryForUtilizer(enquiryId,userId,isProviderUtilizer);
+         });
+       
+
+    };
+    var editEnquiryForUtilizer = function (enquiryId, userId,is_provider_utilizer) {
         $.ajax(
                 {
-                    url: '/dashboard/getEditEnquiryForm',
+                    url: 'dashboard/getEditEnquiryForm',
                     cache: false,
                     type: 'POST',
-                    data: {'enquiryId': enquiryId, 'userId': userId},
+                    data: {'enquiryId': enquiryId, 'userId': userId,'is_provider_utilizer':is_provider_utilizer},
                     success: function (data)
                     {
                         alert('inside success');
                         data = JSON.parse(data);
                         if (data.status === "error") {
                         } else {
-                            if (formId === 'add-enquiry') {
+                            if (formId === 'edit-enquiry-form') {
                                 $('#editEnquiryDiv').html(data.editEnquiryForm);
                                 //$('#add-enquiry')[0].reset();
                                 //$('.collapsible').collapsible();
@@ -33,8 +37,6 @@ siteObjJs.frontend.dashboardJS = function () {
                 }
         );
     };
-    };
-
 
     // Common method to handle add and edit ajax request and reponse
     var handleAjaxRequest = function () {
@@ -77,10 +79,9 @@ siteObjJs.frontend.dashboardJS = function () {
     return {
         //main function to initiate the module
         init: function () {
-             alert(234);
-       
+            
             initializeListener();
             siteObjJs.validation.formValidateInit('#add-enquiry', handleAjaxRequest);
-        }
+        },
     };
 }();
