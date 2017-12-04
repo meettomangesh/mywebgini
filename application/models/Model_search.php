@@ -81,8 +81,7 @@ class Model_search extends CI_Model{
 	}
 	public function simple_search_count($data){
 		if((isset($data['skills']) && !empty($data['skills'])) || isset($data['country_name']) && !empty($data['country_name'])){
-        pre($data['skills']);
-
+        
         if(isset($data['skills']) && $data['skills']!=''){
 			$skills = str_replace(',','|',$data['skills']);			
 		}
@@ -96,9 +95,12 @@ class Model_search extends CI_Model{
 		//implode array into formatted string 
 		//$skills = "'" . implode ( "', '", $skills ) . "'";
 		
-		$sql = "SELECT id FROM tbl_skillset WHERE skill IN(".$skills.")";
+		/*$sql = "SELECT id FROM tbl_skillset WHERE skill IN(".$skills.")";
         $result = $this->db->query($sql);
 		$roles = $result->result();
+        */
+        $result = $this->db->where("skill REGEXP '".$skills."'")->get('skillset')->result();
+        pre($result);
 		if(isset($roles) && !empty($roles)){
 			foreach($roles as $role){
 				$r[] = $role->id;
