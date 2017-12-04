@@ -43,10 +43,16 @@ $this->load->view('vwFooter');
                 success: function (response) {
                     response = JSON.parse(response);
                     var skillArray = response;
-                    var dataSkill = {};
-                    for (var i = 0; i < skillArray.length; i++) {
+                    var dataSkill = [{}];
+                    var dataMain = [{}];
+                    /*for (var i = 0; i < skillArray.length; i++) {
                         dataSkill[skillArray[i].skill] = skillArray[i].flag; //skillArray[i].flag or null
-                    }
+                    }*/
+                    response.forEach(function(element,index) {
+                    dataSkill[element.skill] = ''; //skillArray[i].flag or null
+               
+                    });
+               
                     $('.chips-autocomplete').material_chip({
                         autocompleteOptions: {
                             data: dataSkill,
@@ -56,6 +62,8 @@ $this->load->view('vwFooter');
                     });
                 }
             });
+
+             
         });
     });
 

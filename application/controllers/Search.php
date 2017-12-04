@@ -13,7 +13,7 @@ class Search extends CI_Controller {
     }
 	public function simple_search(){
 		$config = array();
-        $config["base_url"] = base_url() . "index.php/search/simple_search";
+        $config["base_url"] = base_url() . "search/simple_search";
         $config["total_rows"] = $this->Model_search->simple_search_count($_POST);
         $config["per_page"] = 5;
         $config["uri_segment"] = 3;

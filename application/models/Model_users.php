@@ -211,7 +211,7 @@ class Model_users extends CI_Model {
         return ($is_provider_utilizer == 'provider') ? $this->db->where('provider_id', $provider_id)->get('tbl_extra_roles')->result() : $this->db->where('utilizer_id', $provider_id)->get('utilizer_looking_for')->result();
     }
     public function getUserDataByProviderUtilizerId($provider_id, $is_provider_utilizer) {
-        return ($is_provider_utilizer == 'provider') ? $this->db->where('id', $provider_id)->get('providers')->result() : $this->db->where('id', $provider_id)->get('utilizers')->result();
+        return ($is_provider_utilizer == 'provider') ? $this->db->where('id', $provider_id)->get('providers')->result() : $this->db->where('id', $provider_id)->get('utilizers')->row();
     }
 
     public function getEnquiriesByProviderUtilizerId($provider_id, $is_provider_utilizer) {

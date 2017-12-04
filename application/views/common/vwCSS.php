@@ -11,8 +11,9 @@
 <link type="text/css" rel="stylesheet" href="<?php echo HTTP_CSS_PATH; ?>../MDB/css/mdb.min.css"  media="screen,projection"/>
 <link type="text/css" rel="stylesheet" href="<?php echo HTTP_CSS_PATH; ?>../MDB/css/style.css"  media="screen,projection"/>-->
 
-<link type="text/css" rel="stylesheet" href="<?php echo HTTP_CSS_PATH; ?>materialize.min.css"  media="screen,projection"/>
+
 <link type="text/css" rel="stylesheet" href="<?php echo HTTP_CSS_PATH; ?>materialize.css"  media="screen,projection"/>
+<link type="text/css" rel="stylesheet" href="<?php echo HTTP_CSS_PATH; ?>materialize.min.css"  media="screen,projection"/>
 <link type="text/css" rel="stylesheet" href="<?php echo HTTP_CSS_PATH; ?>owl.carousel.min.css">
 <link type="text/css" rel="stylesheet" href="<?php echo HTTP_CSS_PATH; ?>owl.theme.default.min.css">
 <link type="text/css" rel="stylesheet" href="<?php echo HTTP_CSS_PATH; ?>animate.min.css">

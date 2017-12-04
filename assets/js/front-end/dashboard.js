@@ -19,15 +19,17 @@ siteObjJs.frontend.dashboardJS = function () {
                     data: {'enquiryId': enquiryId, 'userId': userId,'is_provider_utilizer':is_provider_utilizer},
                     success: function (data)
                     {
-                        alert('inside success');
+                        
                         data = JSON.parse(data);
                         if (data.status === "error") {
                         } else {
-                            if (formId === 'edit-enquiry-form') {
                                 $('#editEnquiryDiv').html(data.editEnquiryForm);
+                                $('#edit-enquiry').removeClass('hide');
+                                $('#edit-enquiry').click();
+                                return false;
                                 //$('#add-enquiry')[0].reset();
                                 //$('.collapsible').collapsible();
-                            }
+                          
                         }
                     },
                     error: function (jqXhr, json, errorThrown)

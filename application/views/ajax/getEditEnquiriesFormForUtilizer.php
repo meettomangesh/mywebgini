@@ -1,3 +1,9 @@
+<?php
+/*echo '<pre>';
+print_r($skillsets);
+exit;
+*/
+?>
 <form class="col s12" name="edit-enquiry" id="add-enquiry" action="<?php echo base_url('dashboard/editEnquiry'); ?>" method="POST">
     <input type="hidden" name="user_id" value="<?php echo $user->id; ?>">
     <div class="row">

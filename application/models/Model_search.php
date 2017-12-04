@@ -81,20 +81,20 @@ class Model_search extends CI_Model{
 	}
 	public function simple_search_count($data){
 		if((isset($data['skills']) && !empty($data['skills'])) || isset($data['country_name']) && !empty($data['country_name'])){
-		if(isset($data['skills']) && $data['skills']!=''){
-			$skills = explode(',',$data['skills']);			
-		}else{
-			$skills = array();
+        pre($data['skills']);
+
+        if(isset($data['skills']) && $data['skills']!=''){
+			$skills = str_replace(',','|',$data['skills']);			
 		}
+        
 		if(isset($data['country_name']) && $data['country_name']!=''){
 			$country_name = $data['country_name'];			
-		}else{
-			$country_name = '';
-		}		
-		//array_map and trim function remove spaces from array
-		$skills = array_map('trim',$skills);
+		}
+
+        //array_map and trim function remove spaces from array
+		//$skills = array_map('trim',$skills);
 		//implode array into formatted string 
-		$skills = "'" . implode ( "', '", $skills ) . "'";
+		//$skills = "'" . implode ( "', '", $skills ) . "'";
 		
 		$sql = "SELECT id FROM tbl_skillset WHERE skill IN(".$skills.")";
         $result = $this->db->query($sql);
@@ -202,20 +202,15 @@ class Model_search extends CI_Model{
 		return json_encode($data);
 	}
 	public function getSkills(){
-		$data = array();
-		$sql = "SELECT skill FROM tbl_skillset WHERE 1=1 ORDER BY id";
-        $result = $this->db->query($sql);
+		$result = $this->getSkillsArray();
 		
-		foreach($result->result() as $row){
-			$data[]['skill'] = $row->skill;
+		foreach($result as $row){
+			$data[] = array('id'=>$row->id,'skill'=>$row->skill);
 		}
 		return json_encode($data);
 	}
 	public function getSkillsArray(){
-		$data = array();
-		$sql = "SELECT * FROM tbl_skillset WHERE 1=1 ORDER BY id";
-        $result = $this->db->query($sql);		
-		return $result->result();
+        return $this->db->order_by('id')->get('skillset')->result();
 	}
 	public function total_count($who=''){
 		$data = array();
