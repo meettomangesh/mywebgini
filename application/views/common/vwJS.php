@@ -18,6 +18,7 @@
 <script type="text/javascript" src="<?php echo HTTP_JS_PATH; ?>owl.carousel.min.js"></script>
 <script type="text/javascript" src="<?php echo HTTP_JS_PATH; ?>wow.min.js"></script>
 <script type="text/javascript" src="<?php echo HTTP_JS_PATH; ?>custom.js"></script>
+<script type="text/javascript" src="<?php echo HTTP_JS_PATH; ?>front-end/common.js"></script>
 
 <script type="text/javascript" src="<?php echo HTTP_JS_PATH; ?>front-end/plugins.js"></script>
 

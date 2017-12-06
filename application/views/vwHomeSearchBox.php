@@ -16,7 +16,7 @@
                                 <input id="country" name="country_name" type="text" placeholder="Location" class="blackPlaceHolder winp">
                             </div>
                         </div>					
-                        <button type="button" class="btn-slink"><i class="fa fa-search" aria-hidden="true" onclick="Show();"></i></button>
+                        <button type="button" class="btn-slink"><i class="fa fa-search" aria-hidden="true" onclick="submit_search_form();"></i></button>
                     </div>
                 </form>
             </div>

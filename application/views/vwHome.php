@@ -8,6 +8,7 @@ $this->load->view('vwHeader');
 <?php
 $this->load->view('vwFooter');
 ?>
+<script type="text/javascript" src="<?php echo HTTP_JS_PATH; ?>front-end/home.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -78,18 +79,11 @@ $this->load->view('vwFooter');
         }
         return size;
     };
-    function Show() {
-        var data = $('.chips-autocomplete').material_chip('data');
-        var str = '';
-        for (var i = 0; i < Object.size(data); i++) {
-            if (i == 0) {
-                str += data[i].tag;
-            } else {
-                str += "," + data[i].tag;
-            }
-        }
-        $("#skills").val(str);
-        $("#search_form").submit();
-    }
 
+
+</script>
+<script>
+    $(function () {
+        siteObjJs.frontend.homeJs.init();
+    });
 </script>
