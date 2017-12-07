@@ -20,6 +20,8 @@ siteObjJs.frontend.searchJs = function () {
         console.log(decodeURI(getCookie('searchSkill')));
         var preSelectSkill =  decodeURI(getCookie('searchSkill'));
         console.log(preSelectSkill);
+        var arr = preSelectSkill.split(",");
+console.log(arr);
         $('.search-chips').material_chip({
     data: [{
       tag: 'Apple',
