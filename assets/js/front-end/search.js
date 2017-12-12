@@ -13,29 +13,93 @@ siteObjJs.frontend.searchJs = function () {
             mapGeocoding('add');
         }
     });
+    var InitializeSearchResult = function () {
+        var additional_params = '';
+        var hotelListUrl = "/providersList/";
+        var preSelectSkill = decodeURI(getCookie('searchSkill'));
+        //console.log(preSelectSkill);
+        var arrSkill = preSelectSkill.split(",");
+        var finalObj = [];
+
+        for (i = 0; i < arrSkill.length; i++) {
+            finalObj.push({'tag': arrSkill[i]});
+        }
+        $('.search-chips').material_chip({
+            data: finalObj,
+        });
+        additional_params = "&from-s1=yes&preSelectSkill=" + encodeURIComponent(preSelectSkill) + "&last_cnt=" + $('.result-provider').length;
+        $.ajax({
+            url: hotelListUrl,
+            type: 'POST',
+            data: "check-in-date=" + $("#date-checkin").val() + "&check-out-date=" + $("#date-checkout").val() + additional_params,
+            async: true,
+            success: function (data) {
+                $('#search-loader,#search-overlay-loader').hide();
+                if (mff > 0) {
+                    clearInterval(loadI);
+                }
+                $('#providerList').html('<div class="no-hotels-found none" style="display:none">' + translationJS['NO_HOTELS_FOUND'] + '</div>' + data);
+
+                var has_more_results = $("#has_more_results").val();
+                if (has_more_results == 'true') {
+                    setTimeout(loadMoreResults, 2000);
+                } else {
+                    initialize_sort_feature();
+                }
+                paginate(1);
+                if (data != "No hotels found") {
+                    generateListingData();
+                    centralizeSendPageView();
+                }
+            }
+        });
+    };
+
+    var initialize_sort_feature = function () {
+        $("#select-sort, #select-sort.m").change(function () {
+            $('#hotel-results').html('<br /><br /><div class="hotel-list-loader"><img id="bookloadBar" src="/application/themes/reservationcounter_v2/images/loading_circle.gif" width="102px" height="102px"/></div><br /><br />');
+            var additional_params = '';
+            additional_params = "&webpageObj=" + encodeURIComponent(webpageObj);
+            if (from_s1 == "yes") {
+                additional_params = "&from-s1=yes&webpageObj=" + encodeURIComponent(webpageObj);
+                if (halosearch == 1) {
+                    additional_params = additional_params + "&exclusive_page=yes";
+                }
+            }
+            var ttl = parseInt($('.result-hotel').length);
+            if ($('#exclusiveHotelCnt').length) {
+                var ttl = (parseInt($('.result-hotel').length) + parseInt($('#exclusiveHotelCnt').val().trim()));
+            }
+            additional_params += '&last_cnt=' + ttl;
+            $.ajax({
+                url: "/ajax-content/sort-rates-v1/",
+                async: false,
+                data: "sort-option=" + $(this).val() + "&check-in-date=" + $("#date-checkin").val() + "&check-out-date=" + $("#date-checkout").val() + additional_params,
+                type: 'POST',
+                dataType: "html",
+                success: function (data) {
+                    $('#hotel-results').html(data);
+                    default_setup_onajax();
+                    if ($('#exclusiveHotelCnt').val() != '' && typeof $('#exclusiveHotelCnt').attr('id') != "undefined") {
+                        var total = (parseInt($('.result-hotel.pure-g').length) + parseInt($('#exclusiveHotelCnt').val().trim()));
+                        $('.tttl_hotels_found').html(total);
+                    } else {
+                        $('.tttl_hotels_found').html($('.result-hotel.pure-g').length);
+                    }
+                }
+            });
+        });
+    }
 
     var initializeListener = function () {
 
         console.log('search js is initialised');
-        console.log(decodeURI(getCookie('searchSkill')));
-        var preSelectSkill =  decodeURI(getCookie('searchSkill'));
-        console.log(preSelectSkill);
-        var arr = preSelectSkill.split(",");
-console.log(arr);
-        $('.search-chips').material_chip({
-    data: [{
-      tag: 'Apple',
-    }, {
-      tag: 'Microsoft',
-    }, {
-      tag: 'Google',
-    }],
-  });
-  
-        /*$('#gmap_geocoding').show();
-        
 
-        /*        var formId = $('#cat_id').closest('form').attr('id');
+        InitializeSearchResult();
+        /*$('#gmap_geocoding').show();
+         
+         
+         /*        var formId = $('#cat_id').closest('form').attr('id');
          
          $('#' + formId).on('change', '#country_id', function (e) {
          if ($(this).val() != 0)
@@ -230,21 +294,21 @@ console.log(arr);
 
         }
 //12.9715987===77.59456269999998
-        
-     /*   var map = new GMaps({
-            div: '#gmap_geocoding',
-            lat: lati,
-            lng: longi,
-            height: '275px',
-            width: '100%',
-        });
-        map.setCenter(lati, longi);
-        var marker = map.addMarker({
-            lat: lati,
-            lng: longi,
-            draggable: true,
 
-        });*/
+        /*   var map = new GMaps({
+         div: '#gmap_geocoding',
+         lat: lati,
+         lng: longi,
+         height: '275px',
+         width: '100%',
+         });
+         map.setCenter(lati, longi);
+         var marker = map.addMarker({
+         lat: lati,
+         lng: longi,
+         draggable: true,
+         
+         });*/
         //$('#registration_form').find('input[id="latitude_number"]').val(lati);
         //$('#registration_form').find('input[id="longitude_number"]').val(longi);
         var handleAction = function (handle_type) {

@@ -83,21 +83,30 @@
 <script type="text/javascript" src="<?php echo HTTP_JS_PATH; ?>jquery.validate.min.js"></script>
 <script type="text/javascript" src="<?php echo HTTP_JS_PATH; ?>custom-validation.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>-->
-     <?php 
-        $this->load->view('common/vwJS');
-        ?>
+<?php
+$this->load->view('common/vwJS');
+?>
 <script>
     $("#advance_search_btn").on("click", function () {
-        $("#simple_search_form").hide();
-        $("#advance_search_btn").hide();
-        $("#advance_search_form").show();
-        $("#simple_search_btn").show();
+        //$("#simple_search_form").hide();
+        //$("#advance_search_btn").hide();
+        //$("#advance_search_form").show();
+        //$("#simple_search_btn").show();
+        $("#simple_search_form").addClass('hide');
+        $("#advance_search_form").removeClass('hide');
+        $("#simple_search_btn").removeClass('hide');
+        $("#advance_search_btn").addClass('hide');
+
     });
     $("#simple_search_btn").on("click", function () {
-        $("#advance_search_form").hide();
-        $("#simple_search_btn").hide();
-        $("#simple_search_form").show();
-        $("#advance_search_btn").show();
+//        $("#advance_search_form").hide();
+//        $("#simple_search_btn").hide();
+//        $("#simple_search_form").show();
+//        $("#advance_search_btn").show();
+        $("#advance_search_form").addClass('hide');
+        $("#simple_search_form").removeClass('hide');
+                $("#simple_search_btn").addClass('hide');
+        $("#advance_search_btn").removeClass('hide');
     });
     function get_states(country_id) {
         $.ajax({

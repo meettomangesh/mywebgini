@@ -216,79 +216,97 @@ siteObjJs.frontend.homeJs = function () {
         }
 //12.9715987===77.59456269999998
 
-     /*   var map = new GMaps({
-            div: '#gmap_geocoding',
-            lat: lati,
-            lng: longi,
-            height: '275px',
-            width: '100%',
-        });
-        map.setCenter(lati, longi);
-        var marker = map.addMarker({
-            lat: lati,
-            lng: longi,
-            draggable: true,
+        /*   var map = new GMaps({
+         div: '#gmap_geocoding',
+         lat: lati,
+         lng: longi,
+         height: '275px',
+         width: '100%',
+         });
+         map.setCenter(lati, longi);
+         var marker = map.addMarker({
+         lat: lati,
+         lng: longi,
+         draggable: true,
+         
+         });*/
 
-        });*/
+        $('.chips').on('chip.add', function (e, chip) {
+            console.log('I am on line 235');
+            console.log($('.chips-autocomplete').material_chip('data'));
+            getSetChipData();
+        });
+
+        $('.chips').on('chip.delete', function (e, chip) {
+            console.log('I am on line 239');
+            console.log($('.chips-autocomplete').material_chip('data'));
+            getSetChipData();
+        });
+
+        var getSetChipData = function () {
+            var data = $('.chips-autocomplete').material_chip('data');
+            var str = '';
+            for (var i = 0; i < Object.size(data); i++) {
+                if (i == 0) {
+                    str += data[i].tag;
+                } else {
+                    str += "," + data[i].tag;
+                }
+            }
+            setCookie('searchSkill', str, 1);
+
+            $("#skills").val(str);
+
+        };
 
         submit_search_form = function () {
-            
-        var data = $('.chips-autocomplete').material_chip('data');
-        var str = '';
-        for (var i = 0; i < Object.size(data); i++) {
-            if (i == 0) {
-                str += data[i].tag;
-            } else {
-                str += "," + data[i].tag;
-            }
-        }
-        setCookie('searchSkill',str,1);
-        $("#skills").val(str);
-        $("#search_form").submit();
-    
+
+
+            $("#search_form").submit();
+
             /*
-            var destinationInp = $("#destination-input").val();
-            if (destinationInp.length == 0 || destinationInp == translationJS['ENTER_CITY_AIRPORT'] || destinationInp == $("#destination-input").attr('placeholder')) {
-                alert(translationJS['EMPTY_DESTINATION_ERROR']);
-                if (isDevice == 'mobile' || isDevice == 'tablet') {
-                    $('html, body').animate({
-                        'scrollTop': 0
-                    }, 'fast', '', function () {
-                        $('html, body').animate({
-                            'scrollTop': $('#destination-input').position().top + 140
-                        });
-                    });
-                }
-                $("#destination-input").focus();
-                return false
-            }
-            var checkintxt = $('#date-checkin').val();
-            var checkouttxt = $('#date-checkout').val();
-            var n = "";
-            if ($("#autosuggest-hotel-id").val().length > 0 && $("#autosuggest-original-text").val() == $("#destination-input").val()) {
-                n = "/hotels/show/" + String($("#autosuggest-hotel-id").val()) + "/?"
-            } else {
-                n = "/search/";
-                n += "?destination=" + escape($("#destination-input").val());
-            }
-            if ($("#autosuggest-latitude").val().length > 0 && $("#autosuggest-longitude").val().length > 0 && (($("#autosuggest-original-text").val() == '' && $("#autosuggest-original-text").val() != $("#destination-input").val()) || $("#autosuggest-original-text").val() == $("#destination-input").val())) {
-                n += "&latitude=" + escape($("#autosuggest-latitude").val());
-                n += "&longitude=" + escape($("#autosuggest-longitude").val());
-            }
-            if ($("#autosuggest-landmark-id").val().length > 0 && $("#autosuggest-original-text").val() == $("#destination-input,#results-destination-input,#destination-specials").val()) {
-                n += "&sort=distance&nearby-landmarks=" + escape($("#autosuggest-landmark-id").val())
-            }
-            if ($("#autosuggest-address").val().length > 0 && $("#autosuggest-address").val() == "1") {
-                n += "&address_search=1";
-            }
-            var checkindate, checkoutdate;
-            checkindate = escape($("#date-checkin").val());
-            checkoutdate = escape($("#date-checkout").val());
-            n += "&check-in=" + checkindate;
-            n += "&check-out=" + checkoutdate;
-            n += "&random=" + (100000 + Math.floor(Math.random() * 899999));
-            W(n);
-        */}
+             var destinationInp = $("#destination-input").val();
+             if (destinationInp.length == 0 || destinationInp == translationJS['ENTER_CITY_AIRPORT'] || destinationInp == $("#destination-input").attr('placeholder')) {
+             alert(translationJS['EMPTY_DESTINATION_ERROR']);
+             if (isDevice == 'mobile' || isDevice == 'tablet') {
+             $('html, body').animate({
+             'scrollTop': 0
+             }, 'fast', '', function () {
+             $('html, body').animate({
+             'scrollTop': $('#destination-input').position().top + 140
+             });
+             });
+             }
+             $("#destination-input").focus();
+             return false
+             }
+             var checkintxt = $('#date-checkin').val();
+             var checkouttxt = $('#date-checkout').val();
+             var n = "";
+             if ($("#autosuggest-hotel-id").val().length > 0 && $("#autosuggest-original-text").val() == $("#destination-input").val()) {
+             n = "/hotels/show/" + String($("#autosuggest-hotel-id").val()) + "/?"
+             } else {
+             n = "/search/";
+             n += "?destination=" + escape($("#destination-input").val());
+             }
+             if ($("#autosuggest-latitude").val().length > 0 && $("#autosuggest-longitude").val().length > 0 && (($("#autosuggest-original-text").val() == '' && $("#autosuggest-original-text").val() != $("#destination-input").val()) || $("#autosuggest-original-text").val() == $("#destination-input").val())) {
+             n += "&latitude=" + escape($("#autosuggest-latitude").val());
+             n += "&longitude=" + escape($("#autosuggest-longitude").val());
+             }
+             if ($("#autosuggest-landmark-id").val().length > 0 && $("#autosuggest-original-text").val() == $("#destination-input,#results-destination-input,#destination-specials").val()) {
+             n += "&sort=distance&nearby-landmarks=" + escape($("#autosuggest-landmark-id").val())
+             }
+             if ($("#autosuggest-address").val().length > 0 && $("#autosuggest-address").val() == "1") {
+             n += "&address_search=1";
+             }
+             var checkindate, checkoutdate;
+             checkindate = escape($("#date-checkin").val());
+             checkoutdate = escape($("#date-checkout").val());
+             n += "&check-in=" + checkindate;
+             n += "&check-out=" + checkoutdate;
+             n += "&random=" + (100000 + Math.floor(Math.random() * 899999));
+             W(n);
+             */}
 
         //$('#registration_form').find('input[id="latitude_number"]').val(lati);
         //$('#registration_form').find('input[id="longitude_number"]').val(longi);

@@ -13,7 +13,12 @@ class Search extends CI_Controller {
         $this->load->library("pagination");
     }
 
-    public function simple_search() {
+    public function providersList() {
+             $result = $this->Model_search->simple_search($_POST, 5, $this->uri->segment(3));
+   
+    }
+    public function index() {
+        pre($_POST);
         $config = array();
         $config["base_url"] = base_url() . "search/simple_search";
         $config["total_rows"] = $this->Model_search->simple_search_count($_POST);
@@ -23,6 +28,7 @@ class Search extends CI_Controller {
         $this->pagination->initialize($config);
 
         $data = array();
+        
         $result = $this->Model_search->simple_search($_POST, 5, $this->uri->segment(3));
         $data["links"] = $this->pagination->create_links();
         //print_r($data['links']);die;

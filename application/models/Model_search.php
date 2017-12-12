@@ -25,8 +25,6 @@ class Model_search extends CI_Model {
         if ($offset == '') {
             $offset = 0;
         }
-
-
         if ((isset($data['skills']) && !empty($data['skills'])) || isset($data['country_name']) && !empty($data['country_name'])) {
             $country_name = $skills = '';
             if (isset($data['skills']) && $data['skills'] != '') {
@@ -69,7 +67,7 @@ class Model_search extends CI_Model {
         //$total = $sql2->get()->num_rows();
         $sql->limit($limit,$offset);
         $total = 5;
-        return array('count'=>$total,'data'=>$sql->get()->result());
+        return array('data'=>$sql->get()->result());
     }
 
     public function simple_search_count($data) {
