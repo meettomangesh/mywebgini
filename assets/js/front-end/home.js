@@ -138,11 +138,15 @@ siteObjJs.frontend.homeJs = function () {
 
     // Common method to handle add and edit ajax request and reponse
 
-    var handleAjaxRequest = function () {
-        var formElement = $(this.currentForm); // Retrive form from DOM and convert it to jquery object
+    var handleAjaxRequest = function (formObj) {
+        var formElement = $(formObj); // Retrive form from DOM and convert it to jquery object
         var actionUrl = formElement.attr("action");
+        var formId = formElement.attr("id");
         var actionType = formElement.attr("method");
         var formData = formElement.serialize();
+        if(formId == 'search_form'){
+            
+        }
         var icon = "check";
         var messageType = "success";
         $.ajax(
@@ -153,9 +157,9 @@ siteObjJs.frontend.homeJs = function () {
                     data: formData,
                     success: function (data)
                     {
-                        //console.log(data);
+                        console.log(data);
                         //data: return data from server
-                        if (data.status === "error")
+                        /*if (data.status === "error")
                         {
                             icon = "times";
                             messageType = "danger";
@@ -180,7 +184,7 @@ siteObjJs.frontend.homeJs = function () {
                             place: 'prepend',
                             closeInSeconds: siteObjJs.admin.commonJs.constants.alertCloseSec
                         });
-                        $('#gmap_geocoding').hide();
+                        $('#gmap_geocoding').hide();*/
                     },
                     error: function (jqXhr, json, errorThrown)
                     {
@@ -190,13 +194,13 @@ siteObjJs.frontend.homeJs = function () {
                             errorsHtml += value[0] + '<br />';
                         });
                         // alert(errorsHtml, "Error " + jqXhr.status + ': ' + errorThrown);
-                        Metronic.alert({
+                        /*Metronic.alert({
                             type: 'danger',
                             message: errorsHtml,
                             container: $('#ajax-response-text'),
                             place: 'prepend',
                             closeInSeconds: siteObjJs.admin.commonJs.constants.alertCloseSec
-                        });
+                        });*/
                     }
                 }
         );
@@ -262,7 +266,8 @@ siteObjJs.frontend.homeJs = function () {
         submit_search_form = function () {
 
 
-            $("#search_form").submit();
+            //$("#search_form").submit();
+            handleAjaxRequest("#search_form");
 
             /*
              var destinationInp = $("#destination-input").val();

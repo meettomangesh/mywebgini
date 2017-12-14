@@ -13,7 +13,7 @@
                                     </div>
                                 </div>
                                 <div class="input-field col s5">
-                                    <input id="country" name="country_name" type="text" placeholder="Location" class="blackPlaceHolder winp">
+                                    <input id="country" name="country_name[]" type="text" placeholder="Location" class="blackPlaceHolder winp">
                                 </div>
                             </div>	
                         </div>	
@@ -22,14 +22,13 @@
                                 <div class="input-field col s7">
                                     <div class="rel">
                                         <div placeholder="Graphic, UI, Mobile, UX" type="text" class="chips chips-autocomplete"></div>
-                                        <input type="hidden" value="" name="skills" id="skills">
                                     </div>
                                 </div>
                                 <div class="input-field col s5">
-                                    <select id="country_name" name="country_name" onChange="get_states(this.value);">
+                                    <select id="country_name" name="country_name[]" onChange="get_states(this.value);">
                                         <option value="">Select Country</option>
                                         <?php foreach ($countries as $country) { ?>
-                                            <option value="<?php echo $country->id; ?>"><?php echo $country->name; ?></option>
+                                            <option value="<?php echo $country->name; ?>"><?php echo $country->name; ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>

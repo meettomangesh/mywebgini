@@ -18,6 +18,7 @@ class Search extends CI_Controller {
    
     }
     public function index() {
+         echo 'I am inside index';
         pre($_POST);
         $config = array();
         $config["base_url"] = base_url() . "search/simple_search";
@@ -52,6 +53,9 @@ class Search extends CI_Controller {
     }
 
     public function advance_search() {
+        echo 'I am inside advance';
+        pre($_POST);
+        
         $data = array();
         $result = $this->Model_search->advance_search($_POST);
         $data['profiles'] = $result;

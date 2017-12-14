@@ -96,7 +96,7 @@ $this->load->view('common/vwJS');
         $("#advance_search_form").removeClass('hide');
         $("#simple_search_btn").removeClass('hide');
         $("#advance_search_btn").addClass('hide');
-
+$('#search_form')[0].reset();
     });
     $("#simple_search_btn").on("click", function () {
 //        $("#advance_search_form").hide();
@@ -105,15 +105,17 @@ $this->load->view('common/vwJS');
 //        $("#advance_search_btn").show();
         $("#advance_search_form").addClass('hide');
         $("#simple_search_form").removeClass('hide');
-                $("#simple_search_btn").addClass('hide');
+        $("#simple_search_btn").addClass('hide');
         $("#advance_search_btn").removeClass('hide');
+        
+        $('#search_form')[0].reset();
     });
-    function get_states(country_id) {
+    function get_states(country_name) {
         $.ajax({
             url: "<?php echo base_url('states/get_states'); ?>",
             type: "post",
             data: {
-                country_id: country_id
+                country_name: country_name
             },
             success: function (data) {
                 $("#state_name").empty().html('');
