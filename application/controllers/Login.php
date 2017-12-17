@@ -9,6 +9,7 @@ class Login extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model('Model_home');
+        $this->load->model('Model_search');
         $this->load->model('Model_users');
     }
 
@@ -16,7 +17,8 @@ class Login extends CI_Controller {
         if ($this->session->userdata('is_login')) {
             redirect('dashboard');
         } else {
-            $this->load->view('vwLogin');
+            $data['footer_skills'] = $this->Model_search->getFooterSkills();
+            $this->load->view('vwLogin',$data);
         }
     }
 

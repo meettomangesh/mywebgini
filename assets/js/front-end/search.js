@@ -1,5 +1,7 @@
 siteObjJs.frontend.searchJs = function () {
 
+
+
     $('body').on("click", ".btn-expand-form", function () {
         if ($('#tab1').hasClass('active')) {
             $('#gmap_geocoding').show();
@@ -13,44 +15,198 @@ siteObjJs.frontend.searchJs = function () {
             mapGeocoding('add');
         }
     });
-    var InitializeSearchResult = function () {
-        var additional_params = '';
-        var hotelListUrl = "/providersList/";
-        var preSelectSkill = decodeURI(getCookie('searchSkill'));
-        //console.log(preSelectSkill);
-        var arrSkill = preSelectSkill.split(",");
-        var finalObj = [];
 
-        for (i = 0; i < arrSkill.length; i++) {
-            finalObj.push({'tag': arrSkill[i]});
+
+    $('.chips').on('chip.add', function (e, chip) {
+        getSetChipData(this);
+
+    });
+
+    $('.chips').on('chip.delete', function (e, chip) {
+        getSetChipData(this);
+    });
+
+    function setFilterCriteria() {
+
+    }
+    $('.results-filter-provider-class').click(function (e) {
+        if ($(this).is(':checked')) {
+            console.log('checked', $(this).val());
+            var indexArrLoc = filterProviderClass.indexOf($(this).val());
+            console.log('I am on line 36' + indexArrLoc + '-' + $(this).val());
+            if (indexArrLoc == -1) {
+                filterProviderClass.push($(this).val());
+            }
+        } else {
+            var indexArrLocRemove = filterProviderClass.indexOf($(this).val());
+            if (indexArrLocRemove != -1) {
+                filterProviderClass.splice(indexArrLocRemove, 1);
+            }
+
         }
-        $('.search-chips').material_chip({
-            data: finalObj,
+        setTimeout(function () {
+            execute_filters(false);
+        }, 2000)
+
+    });
+
+    var execute_filters = function (is_load_more) {
+        var count_valid = 0;
+        $('.result-provider').removeClass('valid').addClass('hide');
+        $.each(provider_list, function (index, val) {
+            var validClass = true;
+            var validPrice = true;
+            //console.log(val['provider_id']);
+            console.log('in array', $.inArray(val['average_rating'], filterProviderClass));
+
+            if (val['average_rating'] && $.inArray(val['average_rating'], filterProviderClass) != -1) {
+                console.log('I am on line 70');
+                $('#src_provider_id_' + val["provider_id"]).removeClass('hide').addClass('valid');
+                validProviderIds.push(val["provider_id"]);
+            } else {
+                $('#src_provider_id_' + val["provider_id"]).removeClass('valid').addClass('hide');
+                //validProviderIds.push(val["provider_id"]);
+                var indexArrLocValid = validProviderIds.indexOf(val["provider_id"]);
+                if (indexArrLocValid != -1) {
+                    validProviderIds.splice(indexArrLocValid, 1);
+                }
+            }
+            /*if (price_length && !(filter_price_arr[0] == min_max_price[0] && filter_price_arr[1] == min_max_price[1])) {
+             var manupulatedPrice = val["lowrate"];
+             var thousandSeperator = document.getElementById('thousands_separator').value;
+             var decimalPoint = document.getElementById('decimal_point').value;
+             var maxPriceRange = filter_price_arr[1];
+             manupulatedPrice = manupulatedPrice.replace(thousandSeperator, '');
+             if (decimalPoint != '.') {
+             manupulatedPrice = manupulatedPrice.replace(decimalPoint, '.');
+             }
+             if (maxPriceRange == '500.00') {
+             maxPriceRange = manupulatedPrice;
+             }
+             if (parseInt(manupulatedPrice) >= parseInt(filter_price_arr[0]) && parseInt(manupulatedPrice) <= parseInt(maxPriceRange)) {
+             validPrice = true;
+             } else {
+             validPrice = false;
+             }
+             }*/
+//            if (validClass && validPrice) {
+//                count_valid++;
+//
+//                $('.src_provider_id_' + val["provider_id"]).addClass('valid');
+//
+//            }
         });
-        additional_params = "&from-s1=yes&preSelectSkill=" + encodeURIComponent(preSelectSkill) + "&last_cnt=" + $('.result-provider').length;
+        if ($('#providerList div.valid').size() < 1) {
+            if (!$('.no-providers-found').is(':visible')) {
+                $('.no-providers-found').removeClass('hide');
+                $('.no-providers-found').show();
+            }
+        } else {
+            $('.no-providers-found').addClass('hide');
+            $('.no-providers-found').hide();
+        }
+
+        if ($('.result-provider:visible').size() > 0) {
+            $('.no-providers-found').addClass('hide');
+            $('.no-providers-found').hide();
+        }
+    };
+
+    var initializefeaturedData = function () {
+        var featuredCompanyStr = '';
+        var featuredfreelancerStr = '';
+        $.each(provider_list, function (index, val) {
+            if (val['is_company_individual'] == 1) {
+                featuredfreelancerStr += '<div class="item dev-sbox">';
+                featuredfreelancerStr += '<div class="dev-ipic"><img src="' + baseUrlImg + ((val['photo']) ? val['photo'] : 'no-pre.png') + '" alt=""></div>';
+                featuredfreelancerStr += '<div class="dev-details">';
+                featuredfreelancerStr += '<div class="dev-name t-up">' + val['company_name'] + '</div>';
+                featuredfreelancerStr += '<div class="dev-des"></div>';
+                featuredfreelancerStr += '</div>';
+                featuredfreelancerStr += '</div>';
+            } else {
+                featuredCompanyStr += '<div class="item comp-sbox">';
+                featuredCompanyStr += '<div class="comp-ipic"><img src="' + baseUrlImg + ((val['photo']) ? val['photo'] : 'no-pre.png') + '" alt=""></div>';
+                featuredCompanyStr += '</div>';
+            }
+
+        });
+        //$('#featured_companies').html(featuredCompanyStr);
+        //$('#featured_freelancer').html(featuredfreelancerStr);
+    };
+    var InitializeSearchResult = function () {
+        $('#search-loader,#search-loader-overlay').show();
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf('MSIE ');
+        var mff = ua.indexOf('Firefox');
+        if (mff > 0) {
+            var cur = $(window).scrollTop();
+            var loadI = setInterval(function () {
+                cur += 0.2;
+                $(window).scrollTop(cur + 0.2);
+                $(window).scrollTop(cur - 0.2);
+            }, 100);
+        }
+
+        var additional_params = '';
+        var providerListUrl = baseUrl + "/search/providersList/";
+//        var preSelectSkill = getParamFrmCookieGet('skills');
+//        //console.log(preSelectSkill);
+//        var arrSkill = preSelectSkill.split(",");
+//        var finalObj = [];
+//        for (i = 0; i < arrSkill.length; i++) {
+//            finalObj.push({'tag': arrSkill[i]});
+//        }
+//        $('.search-chips').material_chip({
+//            data: finalObj,
+//        });
+
+
+        /*additional_params += "?skills=" + getParamFrmCookieGet('skills');
+         additional_params += "&country=" + ((getParamFrmCookieGet('country') == 'undefined') ? getParamFrmCookieGet('country') : '');
+         additional_params += "&city=" + ((getParamFrmCookieGet('city') == 'undefined') ? getParamFrmCookieGet('city') : '');
+         additional_params += "&state=" + ((getParamFrmCookieGet('state') == 'undefined') ? getParamFrmCookieGet('state') : '');
+         additional_params += "&noofemp=" + ((getParamFrmCookieGet('noofemp') == 'undefined') ? getParamFrmCookieGet('noofemp') : '');
+         additional_params += "&noofexp=" + ((getParamFrmCookieGet('noofexp') == 'undefined') ? getParamFrmCookieGet('noofexp') : '');
+         additional_params += "&random=" + (100000 + Math.floor(Math.random() * 899999));
+         
+         console.log(additional_params);
+         return false;
+         
+         additional_params += "&last_cnt=" + $('.result-provider').length;*/
+
+        additional_params = {skills: getParamFrmCookieGet('skills'),
+            country: ((getParamFrmCookieGet('country')) ? getParamFrmCookieGet('country') : ''),
+            city: ((getParamFrmCookieGet('city')) ? getParamFrmCookieGet('city') : ''),
+            state: ((getParamFrmCookieGet('state')) ? getParamFrmCookieGet('state') : ''),
+            iscomind: ((getParamFrmCookieGet('iscomind')) ? getParamFrmCookieGet('iscomind') : ''),
+            noofemp: ((getParamFrmCookieGet('noofemp')) ? getParamFrmCookieGet('noofemp') : ''),
+            noofexp: ((getParamFrmCookieGet('noofexp')) ? getParamFrmCookieGet('noofexp') : ''),
+            random: (100000 + Math.floor(Math.random() * 899999)),
+            debug: ((getUrlParameter('debug')) ? getUrlParameter('debug') : '')
+
+        };
         $.ajax({
-            url: hotelListUrl,
+            url: providerListUrl,
             type: 'POST',
-            data: "check-in-date=" + $("#date-checkin").val() + "&check-out-date=" + $("#date-checkout").val() + additional_params,
+            data: additional_params,
             async: true,
             success: function (data) {
                 $('#search-loader,#search-overlay-loader').hide();
                 if (mff > 0) {
                     clearInterval(loadI);
                 }
-                $('#providerList').html('<div class="no-hotels-found none" style="display:none">' + translationJS['NO_HOTELS_FOUND'] + '</div>' + data);
+                $('#providerList').html('<div class="no-providers-found hide" >No providers found.</div>' + data);
+                draw_marker();
+                initializefeaturedData();
+                /*var has_more_results = $("#has_more_results").val();
+                 if (has_more_results == 'true') {
+                 setTimeout(loadMoreResults, 2000);
+                 } else {
+                 initialize_sort_feature();
+                 }
+                 paginate(1);*/
 
-                var has_more_results = $("#has_more_results").val();
-                if (has_more_results == 'true') {
-                    setTimeout(loadMoreResults, 2000);
-                } else {
-                    initialize_sort_feature();
-                }
-                paginate(1);
-                if (data != "No hotels found") {
-                    generateListingData();
-                    centralizeSendPageView();
-                }
             }
         });
     };
@@ -91,11 +247,248 @@ siteObjJs.frontend.searchJs = function () {
         });
     }
 
+    var map;
+    var markers = [];
+    var infoWindow;
+    var locationSelect;
+
+    function initMap() {
+        //var sydney = {lat: -33.863276, lng: 151.107977};
+        var Lucknow = {lat: 24.8559743, lng: 77.9075698};
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: Lucknow,
+            zoom: 5,
+            mapTypeId: 'roadmap',
+            mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
+        });
+        infoWindow = new google.maps.InfoWindow();
+        // var json = JSON.parse(provider_list);
+
+
+        //searchButton = document.getElementById("searchButton").onclick = searchLocations;
+
+        //locationSelect = document.getElementById("locationSelect");
+        /*locationSelect.onchange = function() {
+         var markerNum = locationSelect.options[locationSelect.selectedIndex].value;
+         if (markerNum != "none"){
+         google.maps.event.trigger(markers[markerNum], 'click');
+         }
+         };*/
+    }
+
+    function draw_marker() {
+        infoWindow = new google.maps.InfoWindow();
+        console.log(provider_list);
+        for (var o in provider_list) {
+
+            lat = provider_list[ o ].latitude;
+            lng = provider_list[ o ].longitude;
+            name = provider_list[ o ].company_name;
+            for (var i = 1; i <= 5; i++) {
+                name += "<span class='star" + ((i <= provider_list[ o ].average_rating) ? ' active' : '') + "'></span>";
+            }
+
+            console.log(name);
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(lat, lng),
+                name: name,
+                map: map
+            });
+            google.maps.event.addListener(marker, 'click', function (e) {
+                infoWindow.setContent(this.name);
+                infoWindow.open(map, this);
+            }.bind(marker));
+        }
+        google.maps.event.trigger(map, "resize");
+        //if (typeof marker == !undefined)
+        if (marker) {
+
+            map.panTo(marker.getPosition());
+        }
+        map.setZoom(14);
+    }
+    function draw_provider_marker(provider_data) {
+        var theDesktopMapResults = $('.map-results .results-hotels .results-hotel');
+        if (hotel_data != null) {
+            coordinates.providers = provider_data;
+            if (coordinates.providers.length > 0) {
+                add_hotel_marker = function (H) {
+                    var provider_id = coordinates.providers[H]["provider_id"];
+                    var name = coordinates.providers[H]["company_name"];
+                    var location = coordinates.providers[H]["city_name"];
+
+                    var blueIcon = provider_marker_blue;
+                    var blueDotIcon = provider_marker_blue_dot;
+                    var mapPoints = new google.maps.Point(23, 32);
+                    if (isDevice == "mobile" || isDevice == "tablet") {
+                        var blueIcon = new google.maps.MarkerImage(provider_marker_blue, null, null, null, new google.maps.Size(5, 5));
+                        var blueDotIcon = new google.maps.MarkerImage(provider_marker_blue_dot, null, null, null, new google.maps.Size(-5, -5));
+                        var mapPoints = new google.maps.Point(26, 27);
+                    }
+                    var blue_dot = false;
+                    if (H % 4 == 0) {
+                        var F = new MarkerWithLabel({
+                            position: new google.maps.LatLng(coordinates.providers[H]["latitude"], coordinates.providers[H]["longitude"]),
+                            map: map,
+                            id: provider_id,
+                            icon: blueIcon,
+                            labelContent: name + '' + location,
+                            labelClass: "map-marker-price",
+                            labelAnchor: mapPoints,
+                            draggable: false,
+                            labelInBackground: true,
+                            optimized: false,
+                            zIndex: 107
+                        });
+                    } else {
+                        blue_dot = true;
+                        var F = new MarkerWithLabel({
+                            position: new google.maps.LatLng(coordinates.providers[H]["latitude"], coordinates.providers[H]["longitude"]),
+                            map: map,
+                            id: provider_id,
+                            icon: blueDotIcon,
+                            optimized: false,
+                            zIndex: 107
+                        });
+                    }
+                    options = {
+                        "disableAutoPan": true
+                    };
+                    var infowindow = new google.maps.InfoWindow(options);
+                    var windowControl = new Array();
+                    google.maps.event.addListener(F, 'mouseover', (function (F) {
+                        return function () {
+                            markers.providers[provider_id]['oldlabelContent'] = this.get("labelContent");
+                            if (blue_dot == true) {
+                                this.set("labelContent", price_display);
+                                this.set("draggable", false);
+                                this.set("labelInBackground", true);
+                            }
+                            markers.providers[provider_id]['oldicon'] = this.get("icon");
+                            this.set("icon", provider_marker_red);
+                            markers.providers[provider_id]['oldlabelAnchor'] = this.get("labelAnchor");
+                            this.set("labelAnchor", new google.maps.Point(23, 38));
+                            markers.providers[provider_id]['oldlabelClass'] = this.get("labelClass");
+                            this.set("labelClass", "map-marker-price-red");
+                            scrollto_hotel_id = this.get("id");
+                            /*theDesktopMapResults.removeClass('item-inactive').removeClass('item-active');
+                             theDesktopMapResults.addClass('item-inactive');
+                             $('.map-container .item-active').removeClass('item-active').addClass('item-inactive');
+                             $(".results-hotel-" + scrollto_hotel_id).removeClass('item-inactive');
+                             $(".results-hotel-" + scrollto_hotel_id).addClass('item-active');
+                             if (isDevice != "mobile") {
+                             if ($('.map-container .map-results').hasClass('mCustomScrollbar')) {
+                             $('.map-container .map-results').mCustomScrollbar("scrollTo", ".results-hotel-" + scrollto_hotel_id);
+                             } else {
+                             scrollCenter();
+                             }
+                             }*/
+                        }
+                    })(F));
+                    google.maps.event.addListener(F, 'mouseout', (function (F) {
+                        return function () {
+                            windowControl[H] = false;
+                            this.set("icon", markers.providers[provider_id]['oldicon']);
+                            this.set("labelClass", markers.providers[provider_id]['oldlabelClass']);
+                            this.set("labelAnchor", markers.providers[provider_id]['oldlabelAnchor']);
+                            this.set("labelContent", markers.providers[provider_id]['oldlabelContent']);
+                        }
+                    })(F));
+                    google.maps.event.addListener(F, 'click', function (F) {
+                        scrollto_hotel_id = this.get("id");
+                        theDesktopMapResults.removeClass('item-inactive').removeClass('item-active');
+                        theDesktopMapResults.addClass('item-inactive');
+                        $(".results-hotel-" + scrollto_hotel_id).removeClass('item-inactive');
+                        $(".results-hotel-" + scrollto_hotel_id).addClass('item-active');
+                        if (isDevice != "mobile") {
+                            if ($('.map-container .map-results').hasClass('mCustomScrollbar')) {
+                                $('.map-container .map-results').mCustomScrollbar("scrollTo", ".results-hotel-" + scrollto_hotel_id);
+                            } else {
+                                scrollCenter();
+                            }
+                        } else {
+                            $("#results-hotels-mob-div .results-hotel").addClass("hidden");
+                            $("#results-hotels-mob-div #hotel-img-" + scrollto_hotel_id).removeClass("hidden");
+                            theMobileBottomControls.slideUp(500, function () {
+                                $("#results-hotels-mob-div").slideDown('slow', function () {});
+                            });
+                            markers.hotels.forEach(function (markerHotel) {
+                                var markerId = markerHotel['id'];
+                                var labelClass = markers.hotels[markerId].get("labelClass");
+                                if (markerId != hotelid && labelClass == "map-marker-price-red") {
+                                    var LastMarkerIconObj = JSON.parse($("#hidLastMarkerIcon").val());
+                                    var LastMarkerIconurl = LastMarkerIconObj.url;
+                                    var LastMarkerIconheight = LastMarkerIconObj.size.height;
+                                    var LastMarkerIconwidth = LastMarkerIconObj.size.width;
+                                    var LastMarkerlabelContent = $("#hidLastMarkerlabelContent").val();
+                                    var LastMarkerlabelContentX = LastMarkerIconObj.x;
+                                    var LastMarkerlabelContentY = LastMarkerIconObj.y;
+                                    var LastMarkerlabelAnchorObj = JSON.parse($("#hidLastMarkerlabelAnchor").val());
+                                    var LastMarkerlabelClass = $("#hidLastMarkerlabelClass").val();
+                                    if (isDevice == "mobile" || isDevice == "tablet") {
+                                        var LastMarkerIcon = new google.maps.MarkerImage(LastMarkerIconurl, null, null, null, new google.maps.Size(LastMarkerIconwidth, LastMarkerIconheight));
+                                    }
+                                    markers.hotels[markerId].set("icon", LastMarkerIcon);
+                                    markers.hotels[markerId].set("labelClass", LastMarkerlabelClass);
+                                    markers.hotels[markerId].set("labelAnchor", new google.maps.Point(LastMarkerlabelContentX, LastMarkerlabelContentY));
+                                    if (LastMarkerIconurl == "/application/themes/twig_theme/default/images/map/hotel-blue-dot.svg") {
+                                        markers.hotels[markerId].set("labelContent", '');
+                                    } else {
+                                        markers.hotels[markerId].set("labelContent", LastMarkerlabelContent);
+                                    }
+                                }
+                            });
+                            markers.hotels[hotelid]['oldlabelContent'] = markers.hotels[hotelid].get("labelContent");
+                            markers.hotels[hotelid].set("labelContent", price_display);
+                            markers.hotels[hotelid].set("draggable", false);
+                            markers.hotels[hotelid].set("labelInBackground", true);
+                            markers.hotels[hotelid]['oldicon'] = markers.hotels[hotelid].get("icon");
+                            $("#hidLastMarkerIcon").val(JSON.stringify(markers.hotels[hotelid].get("icon")));
+                            $("#hidLastMarkerlabelContent").val(markers.hotels[hotelid]['labelContent']);
+                            $("#hidLastMarkerlabelAnchor").val(JSON.stringify(markers.hotels[hotelid]['labelAnchor']));
+                            $("#hidLastMarkerlabelClass").val(markers.hotels[hotelid]['labelClass']);
+                            var hotel_marker_redIcon = hotel_marker_red;
+                            if (isDevice == "mobile" || isDevice == "tablet") {
+                                var hotel_marker_redIcon = new google.maps.MarkerImage(hotel_marker_red, null, null, null, new google.maps.Size(8, 8));
+                            }
+                            markers.hotels[hotelid].set("icon", hotel_marker_redIcon);
+                            markers.hotels[hotelid]['oldlabelAnchor'] = markers.hotels[hotelid].get("labelAnchor");
+                            markers.hotels[hotelid].set("labelAnchor", new google.maps.Point(26, 31));
+                            markers.hotels[hotelid]['oldlabelClass'] = markers.hotels[hotelid].get("labelClass");
+                            markers.hotels[hotelid].set("labelClass", "map-marker-price-red");
+                        }
+                    });
+                    markers.hotels[hotelid] = F;
+                    if (document.getElementById("hotel_ids").value.length > 0) {
+                        document.getElementById("hotel_ids").value = document.getElementById("hotel_ids").value + ',' + hotelid;
+                    } else {
+                        document.getElementById("hotel_ids").value = hotelid;
+                    }
+                };
+                for (var k = 0; k < coordinates.hotels.length; k++) {
+                    add_hotel_marker(k);
+                }
+            } else {
+                if (mapCustomChanges != 1) {
+                    alert("No Hotels available around selected region.");
+                }
+            }
+        } else {
+            if (mapCustomChanges != 1) {
+                alert("No Hotels available around selected region.");
+            }
+        }
+        showMarkerIcons(markers, map);
+    }
+
+
     var initializeListener = function () {
 
         console.log('search js is initialised');
 
         InitializeSearchResult();
+        initMap();
+        initSkillAutoComplete();
         /*$('#gmap_geocoding').show();
          
          

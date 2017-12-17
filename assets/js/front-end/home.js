@@ -1,5 +1,6 @@
 siteObjJs.frontend.homeJs = function () {
 
+
     $('body').on("click", ".btn-expand-form", function () {
         if ($('#tab1').hasClass('active')) {
             $('#gmap_geocoding').show();
@@ -13,10 +14,67 @@ siteObjJs.frontend.homeJs = function () {
             mapGeocoding('add');
         }
     });
+    var map;
+    var markers = [];
+    var infoWindow;
+    var locationSelect;
 
+
+    function initMap() {
+        //var sydney = {lat: -33.863276, lng: 151.107977};
+        var Lucknow = {lat: 24.8559743, lng: 77.9075698};
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: Lucknow,
+            zoom: 5,
+            mapTypeId: 'roadmap',
+            mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
+        });
+        infoWindow = new google.maps.InfoWindow();
+        // var json = JSON.parse(provider_list);
+
+
+        //searchButton = document.getElementById("searchButton").onclick = searchLocations;
+
+        //locationSelect = document.getElementById("locationSelect");
+        /*locationSelect.onchange = function() {
+         var markerNum = locationSelect.options[locationSelect.selectedIndex].value;
+         if (markerNum != "none"){
+         google.maps.event.trigger(markers[markerNum], 'click');
+         }
+         };*/
+    }
+    function draw_marker() {
+        infoWindow = new google.maps.InfoWindow();
+        console.log(provider_utilizer_list);
+        for (var o in provider_utilizer_list) {
+
+            lat = provider_utilizer_list[ o ].latitude;
+            lng = provider_utilizer_list[ o ].longitude;
+            name = provider_utilizer_list[ o ].company_name;
+            console.log(lat);
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(lat, lng),
+                name: name,
+                map: map
+            });
+            google.maps.event.addListener(marker, 'click', function (e) {
+                infoWindow.setContent(this.name);
+                infoWindow.open(map, this);
+            }.bind(marker));
+        }
+        google.maps.event.trigger(map, "resize");
+        //if (typeof marker == !undefined)
+        if (marker) {
+            map.panTo(marker.getPosition());
+        }
+        map.setZoom(14);
+    }
     var initializeListener = function () {
 
         console.log('home js is initialised');
+        initSkillAutoComplete();
+        initMap();
+        draw_marker();
         /*$('#gmap_geocoding').show();
          
          
@@ -144,9 +202,7 @@ siteObjJs.frontend.homeJs = function () {
         var formId = formElement.attr("id");
         var actionType = formElement.attr("method");
         var formData = formElement.serialize();
-        if(formId == 'search_form'){
-            
-        }
+
         var icon = "check";
         var messageType = "success";
         $.ajax(
@@ -160,31 +216,31 @@ siteObjJs.frontend.homeJs = function () {
                         console.log(data);
                         //data: return data from server
                         /*if (data.status === "error")
-                        {
-                            icon = "times";
-                            messageType = "danger";
-                        }
-
-                        //Empty the form fields
-                        formElement.find("input[type=text], textarea").val("");
-                        $("#country_id").select2('val', '');
-                        $("#states_id").select2('val', '');
-
-                        //trigger cancel button click event to collapse form and show title of add page
-                        $('.btn-collapse').trigger('click');
-
-                        //reload the data in the datatable
-                        grid.getDataTable().ajax.reload();
-
-                        Metronic.alert({
-                            type: messageType,
-                            icon: icon,
-                            message: data.message,
-                            container: $('#ajax-response-text'),
-                            place: 'prepend',
-                            closeInSeconds: siteObjJs.admin.commonJs.constants.alertCloseSec
-                        });
-                        $('#gmap_geocoding').hide();*/
+                         {
+                         icon = "times";
+                         messageType = "danger";
+                         }
+                         
+                         //Empty the form fields
+                         formElement.find("input[type=text], textarea").val("");
+                         $("#country_id").select2('val', '');
+                         $("#states_id").select2('val', '');
+                         
+                         //trigger cancel button click event to collapse form and show title of add page
+                         $('.btn-collapse').trigger('click');
+                         
+                         //reload the data in the datatable
+                         grid.getDataTable().ajax.reload();
+                         
+                         Metronic.alert({
+                         type: messageType,
+                         icon: icon,
+                         message: data.message,
+                         container: $('#ajax-response-text'),
+                         place: 'prepend',
+                         closeInSeconds: siteObjJs.admin.commonJs.constants.alertCloseSec
+                         });
+                         $('#gmap_geocoding').hide();*/
                     },
                     error: function (jqXhr, json, errorThrown)
                     {
@@ -195,12 +251,12 @@ siteObjJs.frontend.homeJs = function () {
                         });
                         // alert(errorsHtml, "Error " + jqXhr.status + ': ' + errorThrown);
                         /*Metronic.alert({
-                            type: 'danger',
-                            message: errorsHtml,
-                            container: $('#ajax-response-text'),
-                            place: 'prepend',
-                            closeInSeconds: siteObjJs.admin.commonJs.constants.alertCloseSec
-                        });*/
+                         type: 'danger',
+                         message: errorsHtml,
+                         container: $('#ajax-response-text'),
+                         place: 'prepend',
+                         closeInSeconds: siteObjJs.admin.commonJs.constants.alertCloseSec
+                         });*/
                     }
                 }
         );
@@ -236,82 +292,65 @@ siteObjJs.frontend.homeJs = function () {
          });*/
 
         $('.chips').on('chip.add', function (e, chip) {
-            console.log('I am on line 235');
-            console.log($('.chips-autocomplete').material_chip('data'));
-            getSetChipData();
+            getSetChipData(this);
+
         });
 
         $('.chips').on('chip.delete', function (e, chip) {
-            console.log('I am on line 239');
-            console.log($('.chips-autocomplete').material_chip('data'));
-            getSetChipData();
+            getSetChipData(this);
         });
 
-        var getSetChipData = function () {
-            var data = $('.chips-autocomplete').material_chip('data');
-            var str = '';
-            for (var i = 0; i < Object.size(data); i++) {
-                if (i == 0) {
-                    str += data[i].tag;
-                } else {
-                    str += "," + data[i].tag;
-                }
-            }
-            setCookie('searchSkill', str, 1);
 
-            $("#skills").val(str);
-
-        };
 
         submit_search_form = function () {
 
 
             //$("#search_form").submit();
-            handleAjaxRequest("#search_form");
+            //handleAjaxRequest("#search_form");
 
-            /*
-             var destinationInp = $("#destination-input").val();
-             if (destinationInp.length == 0 || destinationInp == translationJS['ENTER_CITY_AIRPORT'] || destinationInp == $("#destination-input").attr('placeholder')) {
-             alert(translationJS['EMPTY_DESTINATION_ERROR']);
-             if (isDevice == 'mobile' || isDevice == 'tablet') {
-             $('html, body').animate({
-             'scrollTop': 0
-             }, 'fast', '', function () {
-             $('html, body').animate({
-             'scrollTop': $('#destination-input').position().top + 140
-             });
-             });
-             }
-             $("#destination-input").focus();
-             return false
-             }
-             var checkintxt = $('#date-checkin').val();
-             var checkouttxt = $('#date-checkout').val();
-             var n = "";
-             if ($("#autosuggest-hotel-id").val().length > 0 && $("#autosuggest-original-text").val() == $("#destination-input").val()) {
-             n = "/hotels/show/" + String($("#autosuggest-hotel-id").val()) + "/?"
-             } else {
-             n = "/search/";
-             n += "?destination=" + escape($("#destination-input").val());
-             }
-             if ($("#autosuggest-latitude").val().length > 0 && $("#autosuggest-longitude").val().length > 0 && (($("#autosuggest-original-text").val() == '' && $("#autosuggest-original-text").val() != $("#destination-input").val()) || $("#autosuggest-original-text").val() == $("#destination-input").val())) {
-             n += "&latitude=" + escape($("#autosuggest-latitude").val());
-             n += "&longitude=" + escape($("#autosuggest-longitude").val());
-             }
-             if ($("#autosuggest-landmark-id").val().length > 0 && $("#autosuggest-original-text").val() == $("#destination-input,#results-destination-input,#destination-specials").val()) {
-             n += "&sort=distance&nearby-landmarks=" + escape($("#autosuggest-landmark-id").val())
-             }
-             if ($("#autosuggest-address").val().length > 0 && $("#autosuggest-address").val() == "1") {
-             n += "&address_search=1";
-             }
-             var checkindate, checkoutdate;
-             checkindate = escape($("#date-checkin").val());
-             checkoutdate = escape($("#date-checkout").val());
-             n += "&check-in=" + checkindate;
-             n += "&check-out=" + checkoutdate;
-             n += "&random=" + (100000 + Math.floor(Math.random() * 899999));
-             W(n);
-             */}
+
+            var skillsInp = $("#skills").val();
+            if (skillsInp.length == 0) {
+                alert('You must enter skill.');
+                if (isDevice == 'mobile' || isDevice == 'tablet') {
+                    $('html, body').animate({
+                        'scrollTop': 0
+                    }, 'fast', '', function () {
+                        $('html, body').animate({
+                            'scrollTop': $('#skills').position().top + 140
+                        });
+                    });
+                }
+                $("#skills").focus();
+                return false
+            }
+            var countryInp = $('#' + activeSearchForm).find('#country').val();
+            var stateInp = $('#state_name').val();
+            var cityInp = $('#city_name').val();
+            var is_company_individualInp = $('#is_company_individual').val();
+            var noOfEmpInp = $('#no_of_employee').val();
+            var noOfExpInp = $('#no_of_year_experience').val();
+
+            var n = "";
+            n = "search/";
+            n += "?skills=" + encodeURI($("#skills").val());
+            n += "&country=" + encodeURI(countryInp);
+            n += "&city=" + encodeURI(cityInp);
+            n += "&state=" + encodeURI(stateInp);
+            n += "&iscomind=" + encodeURI(is_company_individualInp);
+            n += "&noofemp=" + encodeURI(noOfEmpInp);
+            n += "&noofexp=" + encodeURI(noOfExpInp);
+            n += "&random=" + (100000 + Math.floor(Math.random() * 899999));
+
+            setCookie('skills', encodeURI($("#skills").val()), 1);
+            setCookie('country', encodeURI(stateInp), 1);
+            setCookie('city', encodeURI(cityInp), 1);
+            setCookie('state', encodeURI(stateInp), 1);
+            setCookie('iscomind', encodeURI(is_company_individualInp), 1);
+            setCookie('noofemp', encodeURI(noOfEmpInp), 1);
+            setCookie('noofexp', encodeURI(noOfExpInp), 1);
+            redirectURL(n);
+        }
 
         //$('#registration_form').find('input[id="latitude_number"]').val(lati);
         //$('#registration_form').find('input[id="longitude_number"]').val(longi);

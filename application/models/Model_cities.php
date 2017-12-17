@@ -23,4 +23,10 @@ class Model_cities extends CI_Model{
         $result = $this->db->query($sql);
         return $result->result();
     }
+    
+    	public function get_statewise_cities_state_name($state_name){
+        $sql = "SELECT ci.id,ci.name,ci.state_id,s.name as state_name FROM cities ci LEFT JOIN states s ON s.id=ci.state_id WHERE s.name='".$state_name."'";
+        $result = $this->db->query($sql);
+        return $result->result();
+    }
 }

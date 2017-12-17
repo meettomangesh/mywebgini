@@ -58,11 +58,7 @@ $('.scol-3').owlCarousel({
     }
 });
 $('.search-chips').material_chip({
-	data: [{
-	  tag: 'Web Designer',
-	}, {
-	  tag: 'PHP Developer',
-	}],
+	data: [],
 	placeholder: 'Type and search...',
 	secondaryPlaceholder: 'Type and search...',
 });

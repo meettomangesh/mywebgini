@@ -2,8 +2,14 @@
 $this->load->view('vwHeader');
 ?>
 <?php include('vwHomeSearchBox.php'); ?>
+        <div class="map ">
+            <div id="map" style="width: 100%;height: 220px;"></div>
+        </div>
 <?php include('vwSkilledDedicated.php'); ?>
 <?php include('vwHireExpert.php'); ?>
+
+
+  
 <?php include('vwTopCompanies.php'); ?>
 <?php
 $this->load->view('vwFooter');
@@ -11,6 +17,7 @@ $this->load->view('vwFooter');
 <script type="text/javascript" src="<?php echo HTTP_JS_PATH; ?>front-end/home.js"></script>
 
 <script>
+    
     $(document).ready(function () {
         //Autocomplete for country
         $(function () {
@@ -38,33 +45,9 @@ $this->load->view('vwFooter');
     $(document).ready(function () {
         //Autocomplete for skillset
         $(function () {
-            $.ajax({
-                type: 'POST',
-                url: '<?php echo base_url('search/getSkills') ?>',
-                success: function (response) {
-                    response = JSON.parse(response);
-                    var skillArray = response;
-                    var dataSkill = [{}];
-                    var dataMain = [{}];
-                    /*for (var i = 0; i < skillArray.length; i++) {
-                        dataSkill[skillArray[i].skill] = skillArray[i].flag; //skillArray[i].flag or null
-                    }*/
-                    response.forEach(function(element,index) {
-                    dataSkill[element.skill] = ''; //skillArray[i].flag or null
-               
-                    });
-               
-                    $('.chips-autocomplete').material_chip({
-                        autocompleteOptions: {
-                            data: dataSkill,
-                            limit: Infinity,
-                            minLength: 1
-                        }
-                    });
-                }
-            });
 
-             
+
+
         });
     });
 
@@ -86,4 +69,8 @@ $this->load->view('vwFooter');
     $(function () {
         siteObjJs.frontend.homeJs.init();
     });
+</script>
+<script>
+  
+    provider_utilizer_list = <?php echo $provider_utilizer_list; ?>
 </script>

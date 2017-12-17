@@ -545,7 +545,7 @@ h4.gr-head {
 }
 .rating {
     unicode-bidi: bidi-override;
-    direction: rtl;
+    /*direction: rtl;*/
 }
 .rating span.star {
     font-family: FontAwesome;
@@ -561,11 +561,17 @@ h4.gr-head {
 .rating span.star:hover {
     cursor: pointer;
 }
+
+/*
 .rating span.star.active:before, .rating span.star:hover:before, .rating span.star:hover~span.star:before, .rating span.star.active~span.star:before {
     content: "\f005";
     color: #e8c006;
+}*/
+.rating span.star.active:before
+{
+    content: "\f005";
+    color: #e8c006;    
 }
-
 .search-res .search-filter {
     float: left;
     width: 270px;
@@ -1046,7 +1052,7 @@ table .s-winp .select-wrapper input.select-dropdown {
 
 .form-group span.help-block-error{
     position: relative;
-    
+
     left: 0rem;
     font-size: 0.9rem;
     color: #FF4081;
@@ -1057,7 +1063,7 @@ table .s-winp .select-wrapper input.select-dropdown {
 }
 
 .greyBG{
-        zoom: 1;
+    zoom: 1;
     display: block;
     min-height: 70vh;
     font-size: 14px;
@@ -1072,9 +1078,9 @@ table .s-winp .select-wrapper input.select-dropdown {
     height: 342px;
 }
 .map-card .card .card-content .card-title, .map-card .card .card-reveal .card-title {
-  font-size: 1.2rem;
-  line-height: 1.6rem;
-  font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    font-weight: 400;
 }
 .map-card .btn-move-up{
     top: -38px;
@@ -1085,3 +1091,82 @@ table .s-winp .select-wrapper input.select-dropdown {
     height: 250px;
 }
 
+
+#search-loader {
+    display: none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('../img/search-wait-animation.gif?') 50% 50% no-repeat;
+}
+#search-overlay-loader {
+    display: none;
+    -webkit-transition: opacity 0.7s ease;
+    -moz-transition: opacity 0.7s ease;
+    -o-transition: opacity 0.7s ease;
+    transition: opacity 0.7s ease;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    width: 100%;
+    height: 300%;
+    content: "";
+    opacity: 0.5;
+    background-color: #000000;
+    z-index: 9998;
+    cursor: pointer;
+}
+@media (max-width: 767px) {
+    #search-loader {
+        background: url('../img/search-wait-animation.gif') 50% 50% no-repeat;
+    }
+
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+    #search-loader {
+        display: none;
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('../img/search-wait-animation.gif') 50% 50% no-repeat;
+    }
+    #search-overlay-loader {
+        -webkit-transition: opacity 0.7s ease;
+        -moz-transition: opacity 0.7s ease;
+        -o-transition: opacity 0.7s ease;
+        transition: opacity 0.7s ease;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        margin: auto;
+        width: 100%;
+        height: 300%;
+        content: "";
+        opacity: 0.5;
+        background-color: #000000;
+        z-index: 9998;
+        cursor: pointer;
+    }
+}
+@media (max-width: 767px) {
+    #search-loader {
+        background: url('../img/search-wait-animation.gif') 50% 50% no-repeat;
+    }
+
+}
+.search-chips .input{
+
+    color: rgba(0,0,0,0.6);
+}

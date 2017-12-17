@@ -61,13 +61,111 @@ class Model_search extends CI_Model {
 
                 //$sql .= " AND c.name IN('" . $country_name . "') ";
             }
+            $sql->group_by('p.id');
+
+            //$sql->limit($limit, $offset);
+            return $sql->get()->result();
+        }
+    }
+
+    public function getAllProviderUtilizer() {
+        $sql = $this->db->select('p.id as provider_id,p.*,ct.name as city_name,tea.*,pr.rating_count, FORMAT((pr.total_points / pr.rating_count),0) as average_rating')
+                ->from('providers as p')
+                ->join('tbl_extra_roles as ter', 'ter.provider_id = p.id', 'left')
+                ->join('tbl_extra_address as tea', 'tea.provider_id=p.id', 'left')
+                ->join('providers_rating as pr', 'pr.provider_id = p.id', 'left')
+                ->join('countries as c', 'c.id=tea.country', 'left')
+                ->join('cities as ct', 'ct.id=tea.city', 'left')
+                ->join('states as st', 'st.id=tea.state', 'left')
+                ->where('p.status', '1')
+                ->limit(1000, 0);
+
+        return $sql->get()->result();
+    }
+
+    public function search($data) {
+        //echo "=========".$offset;
+        //if ((isset($data['skills']) && !empty($data['skills'])) || isset($data['country']) && !empty($data['country'])) {
+        $country_name = $skills = $state = $city = '';
+        $noofemp = $noofexp = $iscomind = 0;
+        if (!empty($data['skills'])) {
+            $skills = str_replace(',', '|', $data['skills']);
+        }
+
+        if (!empty($data['country'])) {
+            $country_name = $data['country'];
+        }
+
+        if (!empty($data['city'])) {
+            $city = $data['city'];
+        }
+
+        if (!empty($data['state'])) {
+            $state = $data['state'];
+        }
+        if (!empty($data['noofemp'])) {
+            $noofemp = $data['noofemp'];
+        }
+
+        if (!empty($data['noofexp'])) {
+            $noofexp = $data['noofexp'];
+        }
+        if (!empty($data['iscomind'])) {
+            $iscomind = $data['iscomind'];
+        }
+
+        if (!empty($skills)) {
+            $roles = $this->db->select('id,skill')->where("skill REGEXP '" . $skills . "'")->where("status", '1')->get('skillset')->result();
+        }
+        if (isset($roles) && !empty($roles)) {
+            foreach ($roles as $role) {
+                $r[] = $role->id;
+            }
+            $roles = implode('|', $r);
+        } else {
+            $roles = '';
+        }
+        $sql = $this->db->select('p.id as provider_id,p.*,ct.name as city_name,tea.*,pr.rating_count, FORMAT((pr.total_points / pr.rating_count),0) as average_rating')
+                ->from('providers as p')
+                ->join('tbl_extra_roles as ter', 'ter.provider_id = p.id', 'left')
+                ->join('tbl_extra_address as tea', 'tea.provider_id=p.id', 'left')
+                ->join('providers_rating as pr', 'pr.provider_id = p.id', 'left')
+                ->join('countries as c', 'c.id=tea.country', 'left')
+                ->join('cities as ct', 'ct.id=tea.city', 'left')
+                ->join('states as st', 'st.id=tea.state', 'left')
+                ->where('p.status', '1');
+
+
+        if ($roles != '') {
+            $sql->where("ter.roles_of_company REGEXP '" . $roles . "'");
+            //$sql .= " AND ter.roles_of_company IN('" . $roles . "') ";
+        }
+        if ($country_name != '') {
+            $sql->where("c.name REGEXP '" . $country_name . "'");
+        }
+        if ($state != '') {
+            $sql->where("st.name REGEXP '" . $state . "'");
+        }
+        if ($city != '') {
+            $sql->where("ct.name REGEXP '" . $city . "'");
+        }
+        if ($noofemp != 0) {
+            $sql->where('p.no_of_employee >=', $noofemp);
+        }
+        if ($noofexp != 0) {
+            $sql->where('p.years_of_experience >=', $noofexp);
+        }
+        if ($iscomind != 0) {
+            $sql->where('p.is_company_individual =', $iscomind);
         }
         $sql->group_by('p.id');
-        $sql2 = $sql;
-        //$total = $sql2->get()->num_rows();
-        $sql->limit($limit,$offset);
-        $total = 5;
-        return array('data'=>$sql->get()->result());
+        if ($data['debug'] == 1) {
+            print_r($sql->get()->result());
+            pre($this->db->last_query());
+        }
+        //$sql->limit($limit, $offset);
+        return $sql->get()->result();
+        // }
     }
 
     public function simple_search_count($data) {
@@ -180,12 +278,22 @@ class Model_search extends CI_Model {
     }
 
     public function getSkills() {
+        $data = array();
         $result = $this->getSkillsArray();
 
         foreach ($result as $row) {
             $data[] = array('id' => $row->id, 'skill' => $row->skill);
         }
         return json_encode($data);
+    }
+
+    public function getFooterSkills() {
+        $data = array();
+        $result = $this->db->where('view_at_footer', '1')->where('status', '1')->order_by('id')->get('skillset')->result();
+        foreach ($result as $row) {
+            $data[] = array('id' => $row->id, 'skill' => $row->skill);
+        }
+        return $data;
     }
 
     public function getSkillsArray() {

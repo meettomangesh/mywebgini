@@ -13,27 +13,22 @@ class Search extends CI_Controller {
         $this->load->library("pagination");
     }
 
-    public function providersList() {
-             $result = $this->Model_search->simple_search($_POST, 5, $this->uri->segment(3));
-   
-    }
     public function index() {
-         echo 'I am inside index';
-        pre($_POST);
+
         $config = array();
         $config["base_url"] = base_url() . "search/simple_search";
-        $config["total_rows"] = $this->Model_search->simple_search_count($_POST);
+        $config["total_rows"] = $this->Model_search->simple_search_count($_GET);
         $config["per_page"] = 5;
         $config["uri_segment"] = 3;
 
         $this->pagination->initialize($config);
 
         $data = array();
-        
-        $result = $this->Model_search->simple_search($_POST, 5, $this->uri->segment(3));
+
+        $result = $this->Model_search->simple_search($_GET, 5, $this->uri->segment(3));
         $data["links"] = $this->pagination->create_links();
         //print_r($data['links']);die;
-        $data['profiles'] = $result['data'];
+        $data['profiles'] = $result;
         $data['page'] = "search";
         $data['total_count'] = $this->Model_search->total_count('');
         $data['company_count'] = $this->Model_search->total_count('company');
@@ -49,13 +44,21 @@ class Search extends CI_Controller {
         }
         $countries = $this->Model_countries->countries_list();
         $data['countries'] = $countries;
+        $data['footer_skills'] = $this->Model_search->getFooterSkills();
         $this->load->view('vwSearchResult', $data);
     }
 
+    public function providersList() {
+        $data = array();
+        $result = $this->Model_search->search($_POST);
+        $data['profiles'] = $result;
+        $data['profiles_json'] = json_encode($result);
+        //pre($_POST);
+        $data["links"] = $this->pagination->create_links();
+        $this->load->view('vwSearchResultListing', $data);
+    }
+
     public function advance_search() {
-        echo 'I am inside advance';
-        pre($_POST);
-        
         $data = array();
         $result = $this->Model_search->advance_search($_POST);
         $data['profiles'] = $result;

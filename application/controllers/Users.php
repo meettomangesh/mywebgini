@@ -66,14 +66,15 @@ class Users extends CI_Controller {
     public function edit_profile() {
         if ($this->session->userdata('id') != '') {
             $user_id = $this->session->userdata('id');
+            $is_provider_utilizer = $this->session->userdata('is_provider_utilizer');
             $data['page'] = 'edit_profile';
-            $users = $this->Model_users->get_user($user_id);
+            $users = $this->Model_users->get_user($user_id,$is_provider_utilizer);
             $data['users'] = $users;
             $members = $this->Model_users->get_members($user_id);
             $data['members'] = $members;
             $portfolios = $this->Model_users->get_portfolios($user_id);
             $data['portfolios'] = $portfolios;
-            $skills = $this->Model_users->getSkillsByProviderId($user_id);
+            $skills = $this->Model_users->getSkillsRolesByProviderUtilizerId($user_id,$is_provider_utilizer);
             $data['skills'] = $skills;
             //echo "<pre>";print_r($users);die;
             $countries = $this->Model_countries->countries_list();
@@ -197,8 +198,9 @@ class Users extends CI_Controller {
             $data['message'] = "Record updated successfully!!!";
         }
         $user_id = $this->session->userdata('id');
+        $is_provider_utilizer = $this->session->userdata('is_provider_utilizer');
         $data['page'] = 'edit_profile';
-        $users = $this->Model_users->get_user($user_id);
+        $users = $this->Model_users->get_user($user_id,$is_provider_utilizer);
         $data['users'] = $users;
         $members = $this->Model_users->get_members($user_id);
         $data['members'] = $members;

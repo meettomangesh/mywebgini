@@ -1,3 +1,7 @@
+<div id="search-overlay-loader"></div>
+<div id='loading-box'>            
+    <div id="search-loader"></div>
+</div>
 <!-----Footer Start----->
 <div class="signup-strip">
     <div class="container">
@@ -11,7 +15,19 @@
     <div class="container">
         <h4 class="gr-head">Skills Directory</h4>
         <div class="skdir-links">
-            <a href="javascript:void(0)">.NET Programmers</a><a href="javascript:void(0)">Android Programmers</a><a href="javascript:void(0)">ASP.NET Programmers</a><a href="javascript:void(0)">C Programmers</a><a href="javascript:void(0)">C# Programmers</a><a href="javascript:void(0)">C++ Programmers</a><a href="javascript:void(0)">CakePHP Programmers</a><a href="javascript:void(0)">CodeIgniter Programmers</a><a href="javascript:void(0)">Computer Graphics Programmers</a><a href="javascript:void(0)">Database Programmers</a><a href="javascript:void(0)">Drupal Programmers</a><a href="javascript:void(0)">Game Programming Programmers</a><a href="javascript:void(0)">HTML Programmers</a><a href="javascript:void(0)">iPhone Programmers</a><a href="javascript:void(0)">Java Programmers</a><a href="javascript:void(0)">JavaScript Programmers</a><a href="javascript:void(0)">Joomla Programmers</a><a href="javascript:void(0)">Magento Programmers</a><a href="javascript:void(0)">MySQL Programmers</a><a href="javascript:void(0)">Unix Programmers</a><a href="javascript:void(0)">Visual Basic Programmers</a><a href="javascript:void(0)">WordPress Programmers</a><a href="javascript:void(0)">3d Designers</a><a href="javascript:void(0)">After Effects Designers</a><a href="javascript:void(0)">Animation Designers</a><a href="javascript:void(0)">Audio Editing Designers</a><a href="javascript:void(0)">Coreldraw Designers</a><a href="javascript:void(0)">Cover Design Designers</a><a href="javascript:void(0)">Dreamweaver Designers</a><a href="javascript:void(0)">Illustrator Designers</a><a href="javascript:void(0)">Photoshop Designers</a><a href="javascript:void(0)">Video Editing Designers</a><a href="javascript:void(0)">Academic Writing</a><a href="javascript:void(0)">Article Writing</a><a href="javascript:void(0)">Content Writing</a><a href="javascript:void(0)">Fiction Writing</a><a href="javascript:void(0)">Financial Writing</a><a href="javascript:void(0)">Legal Writing</a><a href="javascript:void(0)">Proposal Writing</a><a href="javascript:void(0)">Report Writing</a><a href="javascript:void(0)">Script Writing</a><a href="javascript:void(0)">Technical Writing</a><a href="javascript:void(0)">Data Entry</a><a href="javascript:void(0)">HR &amp; Payroll</a><a href="javascript:void(0)">Transcription	Advertising	</a><a href="javascript:void(0)">Direct Marketing</a><a href="javascript:void(0)">Email Marketing</a><a href="javascript:void(0)">Freelance Marketing</a><a href="javascript:void(0)">Internet Marketing</a><a href="javascript:void(0)">Social Media Marketing</a><a href="javascript:void(0)">Telemarketing</a><a href="javascript:void(0)">Order Processing</a><a href="javascript:void(0)">Technical Support</a><a href="javascript:void(0)">Accounts Payable</a><a href="javascript:void(0)">Accounts Receivable</a><a href="javascript:void(0)">Bookkeeping</a><a href="javascript:void(0)">Business Analysis</a><a href="javascript:void(0)">Financial Reporting	Payroll</a>
+            <?php
+            
+           // pre($footer_skills);
+            if (isset($footer_skills) && !empty($footer_skills)) {
+                foreach ($footer_skills as $footer_skill) {
+                   
+             ?>
+            <a href="javascript:getRedirectParam('skills','<?php echo $footer_skill['skill'];?>')"><?php echo $footer_skill['skill'];?></a>
+            <?php
+                }
+            }
+            ?>
+           
         </div>
     </div>
 </div>        
@@ -22,35 +38,35 @@
                 <div class="col s5">
                     <h5 class="t-up">FIND FREELANCERS BY LOCATION</h5>
                     <ul class="row">
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers In India</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers in Noida</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers in Mumbai</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers in Kolkata</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers in Bangalore</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers In Ahmedabad</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers In New Delhi</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers in Jaipur</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers in Bhopal</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers in Punjab</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Freelancers In Chennai</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('country','India');">Freelancers In India</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('state','Noida');">Freelancers in Noida</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('city','Mumbai');">Freelancers in Mumbai</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('city','Kolkata');">Freelancers in Kolkata</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('city','Bangalore');">Freelancers in Bangalore</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('city','Ahmedabad');">Freelancers In Ahmedabad</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('city','New Delhi');">Freelancers In New Delhi</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('city','Jaipur');">Freelancers in Jaipur</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('city','Bhopal');">Freelancers in Bhopal</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('city','Punjab');">Freelancers in Punjab</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('city','Chennai');">Freelancers In Chennai</a></li>
                     </ul>
                     <div class="see-more"><a href="javascript:void(0);">See more!</a></div>
                 </div>
                 <div class="col s5">
                     <h5 class="t-up">FIND COMPANIES BY EXPERTISE</h5>
                     <ul class="row">
-                        <li class="col s6"><a href="javascript:void(0);">Developers &amp; Programmers</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">PHP Developers</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Graphic Designers</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Photoshop Experts</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Article Writers</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Creative Writing</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Data Entry &amp; Admin</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">MS Excel Consultants</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Sales &amp; Marketing</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Internet Marketing</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Accountants &amp; Legal</a></li>
-                        <li class="col s6"><a href="javascript:void(0);">Finance Consultant</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','Developers & Programmers');">Developers &amp; Programmers</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','PHP Programmers');">PHP Developers</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','Graphic Designers');">Graphic Designers</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','Photoshop Designers');">Photoshop Experts</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','Article Writing');">Article Writers</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','Creative Writing');">Creative Writing</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','Data Entry');">Data Entry &amp; Admin</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','MS Excel Consultants');">MS Excel Consultants</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','Sales & Marketing');">Sales &amp; Marketing</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','Internet Marketing');">Internet Marketing</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','Accountants & Legal');">Accountants &amp; Legal</a></li>
+                        <li class="col s6"><a href="javascript:getRedirectParam('skills','Finance Consultant');">Finance Consultant</a></li>
                     </ul>
                     <div class="see-more"><a href="javascript:void(0);">See more!</a></div>
                 </div>
@@ -96,7 +112,8 @@ $this->load->view('common/vwJS');
         $("#advance_search_form").removeClass('hide');
         $("#simple_search_btn").removeClass('hide');
         $("#advance_search_btn").addClass('hide');
-$('#search_form')[0].reset();
+        $('#search_form')[0].reset();
+        activeSearchForm = 'advance_search_form';
     });
     $("#simple_search_btn").on("click", function () {
 //        $("#advance_search_form").hide();
@@ -107,12 +124,27 @@ $('#search_form')[0].reset();
         $("#simple_search_form").removeClass('hide');
         $("#simple_search_btn").addClass('hide');
         $("#advance_search_btn").removeClass('hide');
-        
+
         $('#search_form')[0].reset();
+        activeSearchForm = 'simple_search_form';
     });
-    function get_states(country_name) {
+    function get_states(country_id) {
         $.ajax({
             url: "<?php echo base_url('states/get_states'); ?>",
+            type: "post",
+            data: {
+                country_id: country_id
+            },
+            success: function (data) {
+                $("#state_name").empty().html('');
+                $("#state_name").append(data);
+                $('#state_name').material_select();
+            }
+        });
+    }
+    function get_states_by_name(country_name) {
+        $.ajax({
+            url: "<?php echo base_url('states/get_states_by_name'); ?>",
             type: "post",
             data: {
                 country_name: country_name
@@ -124,12 +156,13 @@ $('#search_form')[0].reset();
             }
         });
     }
-    function get_cities(state_id) {
+
+    function get_cities(state_name) {
         $.ajax({
-            url: "<?php echo base_url('cities/get_cities'); ?>",
+            url: "<?php echo base_url('cities/get_cities_by_name'); ?>",
             type: "post",
             data: {
-                state_id: state_id
+                state_name: state_name
             },
             success: function (data) {
                 $("#city_name").empty().html('');

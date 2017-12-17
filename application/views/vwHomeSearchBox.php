@@ -2,7 +2,7 @@
     <div class="container">
         <div class="search-hbox">
             <h4 class="center-align wow zoomIn">Your world of website development companies & service providers</h4>
-            <form action="<?php echo base_url('search'); ?>" method="post" name="search_form" id="search_form">
+            <form action="<?php echo base_url('search'); ?>" method="GET" name="search_form" id="search_form">
                 <div>
                     <div class="search-inb wow fadeInUp" data-wow-delay="0.6s">
                         <div id="simple_search_form">
@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
                                 <div class="input-field col s5">
-                                    <select id="country_name" name="country_name[]" onChange="get_states(this.value);">
+                                    <select id="country" name="country_name[]" onChange="get_states_by_name(this.value);">
                                         <option value="">Select Country</option>
                                         <?php foreach ($countries as $country) { ?>
                                             <option value="<?php echo $country->name; ?>"><?php echo $country->name; ?></option>
@@ -49,16 +49,16 @@
                                 <div class="input-field col s4">
                                     <select name="is_company_individual" id="is_company_individual" class="form-control" >
                                         <option value="">Who want to search</option>
-                                        <option value="company">Company</option>
-                                        <option value="individual">Individual</option>
-                                        <option value="both">Both</option>
+                                        <option value="2">Company</option>
+                                        <option value="1">Individual</option>
+                                        <option value="0">Both</option>
                                     </select>
                                 </div>
                                 <div class="input-field col s4">
                                     <input id="no_of_employee" name="no_of_employee" type="text" placeholder="Number of employee" class="blackPlaceHolder winp">
                                 </div>
                                 <div class="input-field col s4">
-                                    <input id="no_of_year_expericance" name="no_of_year_expericance" type="text" placeholder="Number of year experiance" class="blackPlaceHolder winp">
+                                    <input id="no_of_year_experience" name="no_of_year_experience" type="text" placeholder="Number of year experiance" class="blackPlaceHolder winp">
                                 </div>
                             </div>
                         </div>

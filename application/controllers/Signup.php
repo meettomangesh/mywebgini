@@ -11,6 +11,7 @@ class Signup extends CI_Controller {
         $this->load->library('form_validation');
 		$this->load->model('Model_countries');
 		$this->load->model('Model_signup');
+		$this->load->model('Model_search');
     }
 
     public function index() {
@@ -19,6 +20,7 @@ class Signup extends CI_Controller {
 		$arr['countries'] = $countries;    
 		$skillsets = $this->Model_signup->skillset_list();
 		$arr['skillsets'] = $skillsets;
+                $data['footer_skills'] = $this->Model_search->getFooterSkills();
         $this->load->view('vwSignup',$arr);
     }
 	public function signup() {

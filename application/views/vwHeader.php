@@ -65,7 +65,7 @@
             <div class="navbar-fixed">
                 <nav class="main-header">
                     <div class="nav-wrapper">
-                        <a href="<?php echo base_url(); ?>" class="brand-logo"><img src="<?php echo base_url(); ?>assets/images/logo-white.png" alt="Company Name"></a>
+                        <a href="<?php echo base_url(); ?>" class="brand-logo"><img src="<?php echo base_url(); ?>assets/img/logo-white.png" alt="Company Name"></a>
                         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                         <ul class="right mbtn hide-on-med-and-down">
                             <li><a href="<?php echo base_url(); ?>" class="waves-effect waves-light btn btn-home"><i class="material-icons">home</i></a></li>
@@ -79,8 +79,9 @@
                             <?php } ?>
                         </ul>
                         <div class="search-bx">
-                            <div class="search-chips"></div>
-                            <a href="javascript:void(0)" class="btn-slink"><i class="fa fa-search" aria-hidden="true"></i></a>
+                            <div class="search-chips chips chips-autocomplete" type="text"></div>
+<!--                            <div placeholder="Graphic, UI, Mobile, UX" type="text" class="chips chips-autocomplete"></div>-->
+                            <a href="javascript:submit_search_header_form();" class="btn-slink"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
                         <ul class="side-nav" id="mobile-demo"></ul>
                     </div>

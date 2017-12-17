@@ -13,6 +13,7 @@ class Dashboard extends CI_Controller {
         $this->load->model('Model_signup');
         $this->load->model('Model_countries');
         $this->load->model('Model_enquiry');
+        $this->load->model('Model_search');
         $this->load->helper(array('form', 'url'));
     }
 
@@ -32,7 +33,7 @@ class Dashboard extends CI_Controller {
         }
         $skills = $this->Model_users->getSkillsRolesByProviderUtilizerId($user_id, $is_provider_utilizer);
         $data['skills'] = $skills;
-
+        $data['footer_skills'] = $this->Model_search->getFooterSkills();
         $enquiry = $this->Model_users->getEnquiriesByProviderUtilizerId($user_id, $is_provider_utilizer);
         $data['enquiry'] = $enquiry;
 

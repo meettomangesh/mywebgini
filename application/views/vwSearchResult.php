@@ -5,9 +5,31 @@ $this->load->view('vwHeader');
     <?php $this->load->view('vwSearchResultLeftPage'); ?>
     <div class="sres-main">
         <div class="row">
-            <div id="providerList">
-                <?php //$this->load->view('vwSearchResultListing'); ?>
-            </div>			
+
+            <div class="col s7">
+                <div class="sres-list">
+                    <div class="sres-head">
+                        <div class="shead"><span><i class="fa fa-file-text" aria-hidden="true"></i>  Showing Results</span></div>
+                        <div class="sres-sort">
+                            <a href="" class="sort-ic sort-th active"><i class="fa fa-th-large" aria-hidden="true"></i></a>
+                            <a href="" class="sort-ic sort-li"><i class="fa fa-th-list" aria-hidden="true"></i></a>
+                            <div class="input-field">
+                                <select>
+                                    <option value="" disabled selected>Sort By</option>
+                                    <option value="1">Price</option>
+                                    <option value="2">Price</option>
+                                    <option value="3">Price</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sblock-list">
+                        <div id="providerList">
+                            <?php //$this->load->view('vwSearchResultListing'); ?>
+                        </div>	
+                    </div>
+                </div>
+            </div>
             <?php $this->load->view('vwSearchResultRightPage'); ?>
         </div>
         <!--<div class="row">
@@ -128,7 +150,7 @@ $this->load->view('vwHeader');
              });
              },
              error:function(){
-         
+             
              }              
              });*/
         }
@@ -178,9 +200,9 @@ $this->load->view('vwHeader');
             markers.push(marker);
         }
     </script>
-    <script async defer
+<!--    <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_8tVyvLsvHU6Aj_rw-_YZKQxdp4tpuFc&callback=initMap">
-    </script>
+    </script>-->
     <script>
         $(function () {
             siteObjJs.frontend.searchJs.init();

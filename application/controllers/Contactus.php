@@ -23,10 +23,12 @@ class Contactus extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->model('Model_search');
     }
 
     public function index() {
            $arr['page'] ='contact';
+           $data['footer_skills'] = $this->Model_search->getFooterSkills();
         $this->load->view('vwContactus',$arr);
     }
 

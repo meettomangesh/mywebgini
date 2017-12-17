@@ -60,15 +60,29 @@ class States extends CI_Controller {
     }
 
     public function get_states() {
-        $country_name = $this->input->post('country_name');
-        $countryName = $this->Model_countries->getCountryByName($country_name);
-        $country_id = $countryName->id;
+        $country_id = $this->input->post('country_id');
         $states = $this->Model_states->get_countrywise_states($country_id);
         $state_data = '';
         //$state_data = '<select name="state_name" id="state" class="form-control" onchange="get_cities(this.id,this.value);">';
         $state_data = '<option value="">Select State</option>';
         foreach ($states as $state) {
             $state_data .= '<option value="' . $state->id . '" >' . $state->name . '</option>';
+        }
+        //$state_data.='</select>';
+        print_r($state_data);
+    }
+
+    public function get_states_by_name() {
+        $country_name = $this->input->post('country_name');
+        $countryName = $this->Model_countries->getCountryByName($country_name);
+        
+        $country_id = $countryName->id;
+        $states = $this->Model_states->get_countrywise_states($country_id);
+        $state_data = '';
+        //$state_data = '<select name="state_name" id="state" class="form-control" onchange="get_cities(this.id,this.value);">';
+        $state_data = '<option value="">Select State</option>';
+        foreach ($states as $state) {
+            $state_data .= '<option value="' . $state->name . '" >' . $state->name . '</option>';
         }
         //$state_data.='</select>';
         print_r($state_data);

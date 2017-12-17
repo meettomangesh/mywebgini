@@ -79,8 +79,8 @@ class Model_users extends CI_Model {
                 'password' => $this->generatePassword($data['password']),
             );
 
-            $result = $providerId = $this->db->insert('providers', $providerData);
-
+            $result = $this->db->insert('providers', $providerData);
+            $providerId = $this->db->insert_id();
             $providerExtraAddressData = array(
                 'provider_id' => $providerId,
                 'extra_emailid' => $data['email'],
@@ -210,6 +210,7 @@ class Model_users extends CI_Model {
     public function getSkillsRolesByProviderUtilizerId($provider_id, $is_provider_utilizer) {
         return ($is_provider_utilizer == 'provider') ? $this->db->where('provider_id', $provider_id)->get('tbl_extra_roles')->result() : $this->db->where('utilizer_id', $provider_id)->get('utilizer_looking_for')->result();
     }
+
     public function getUserDataByProviderUtilizerId($provider_id, $is_provider_utilizer) {
         return ($is_provider_utilizer == 'provider') ? $this->db->where('id', $provider_id)->get('providers')->result() : $this->db->where('id', $provider_id)->get('utilizers')->row();
     }
