@@ -15,6 +15,7 @@ class Search extends CI_Controller {
 
     public function index() {
 
+        
         $config = array();
         $config["base_url"] = base_url() . "search/simple_search";
         $config["total_rows"] = $this->Model_search->simple_search_count($_GET);
@@ -36,6 +37,7 @@ class Search extends CI_Controller {
         $data['other_skills_count'] = $this->Model_search->total_count('other_skills');
         $data['skills'] = $this->Model_search->getSkillsArray();
         $k = 0;
+       // pre($data['skills']);
         foreach ($data['skills'] as $skill) {
             $data['refine_skills'][$k]["count"] = $this->Model_search->roles_count($skill->id);
             $data['refine_skills'][$k]["skill"] = $skill->skill;

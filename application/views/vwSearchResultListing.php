@@ -16,18 +16,14 @@
                                         <div class="comp-rate">
                                             <span class="rating">
                                                 <?php
-                                                //pre($profile);
-                                               // echo $profile->rating_count . '----' . $profile->average_rating;
-                                                //exit;
-                                                //if (!empty($profile->average_rating) && $profile->average_rating > 0) {
                                                     for ($i = 1; $i <= 5; $i++) {
                                                         echo "<span class='star".(($i<=$profile->average_rating)?' active':'')."'></span>";
                                                     }
-                                                //} else 
                                                 ?>
                                             </span>
                                             <span class="rec-tex"><?php echo ($profile->rating_count)?$profile->rating_count:0;?> Reviews</span>
                                         </div>
+                                        
                                         <div class="comp-pr"><?php if ($profile->turn_over != '') { ?><i class="fa fa-inr" aria-hidden="true"></i> <?php echo $profile->turn_over; ?><?php
                                                 if ($profile->is_company_individual == 'company') {
                                                     echo " Lacs";
