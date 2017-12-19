@@ -44,6 +44,7 @@ class Search extends CI_Controller {
             $data['refine_skills'][$k]["id"] = $skill->id;
             $k++;
         }
+       // pre($data['refine_skills']);
         $countries = $this->Model_countries->countries_list();
         $data['countries'] = $countries;
         $data['footer_skills'] = $this->Model_search->getFooterSkills();

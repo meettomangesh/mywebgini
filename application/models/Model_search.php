@@ -7,6 +7,7 @@ class Model_search extends CI_Model {
 
     public function __construct() {
         parent::__construct();
+        $this->load->database();
     }
 
     public function search_by_keyword($keyword) {
@@ -87,6 +88,7 @@ class Model_search extends CI_Model {
         //echo "=========".$offset;
         //if ((isset($data['skills']) && !empty($data['skills'])) || isset($data['country']) && !empty($data['country'])) {
         $country_name = $skills = $state = $city = '';
+        
         $noofemp = $noofexp = $iscomind = 0;
         if (!empty($data['skills'])) {
             $skills = str_replace(',', '|', $data['skills']);
@@ -115,7 +117,10 @@ class Model_search extends CI_Model {
         }
 
         if (!empty($skills)) {
-            $roles = $this->db->select('id,skill')->where("skill REGEXP '" . $skills . "'")->where("status", '1')->get('skillset')->result();
+            //$roles = $this->db->select('id,skill')->where("skill REGEXP '" . $skills . "'")->where("status", '1')->get('skillset')->result();
+           // "select id,skill from skillset where status = 1 AND skill REGEXP '" . $skills . "'";
+           $sql= "select id,skill from skillset where status = '1' AND skill REGEXP '" . $skills . "'";
+            $roles = $this->db->query($sql)->result();
         }
         if (isset($roles) && !empty($roles)) {
             foreach ($roles as $role) {
@@ -125,6 +130,9 @@ class Model_search extends CI_Model {
         } else {
             $roles = '';
         }
+
+        /*
+         * 
 $sql = $this->db->select('p.id as provider_id,p.*,ct.name as city_name,tea.*,pr.rating_count, FORMAT((pr.total_points / pr.rating_count),0) as average_rating,group_concat(s.skill) AS skill')
                 ->from('providers as p')
                 ->join('tbl_extra_roles as ter', 'ter.provider_id = p.id', 'left')
@@ -164,8 +172,54 @@ $sql = $this->db->select('p.id as provider_id,p.*,ct.name as city_name,tea.*,pr.
             print_r($sql->get()->result());
             pre($this->db->last_query());
         }
+        //$sql->limit($limit, $offset);*/
+        
+        $sql = "SELECT p.id as provider_id,p.*,ct.name as city_name,tea.*,pr.rating_count, FORMAT((pr.total_points / pr.rating_count),0) as average_rating, skills.skill,skills.roles_of_company
+FROM `providers` as `p`
+ JOIN
+			( SELECT `ter`.`provider_id`, group_concat(s.skill) AS skill,ter.roles_of_company 
+			FROM `tbl_extra_roles` AS `ter` 
+			LEFT JOIN `skillset` AS s ON ter.roles_of_company=s.id GROUP BY ter.provider_id ) as skills ON p.id = skills.provider_id 
+LEFT JOIN `tbl_extra_address` as `tea` ON `tea`.`provider_id`=`p`.`id`
+LEFT JOIN `providers_rating` as `pr` ON `pr`.`provider_id` = `p`.`id`
+LEFT JOIN `countries` as `c` ON `c`.`id`=`tea`.`country`
+LEFT JOIN `cities` as `ct` ON `ct`.`id`=`tea`.`city`
+LEFT JOIN `states` as `st` ON `st`.`id`=`tea`.`state`
+WHERE `p`.`status` = '1'";
+
+        if ($roles != '') {
+            $sql .= " AND skills.roles_of_company REGEXP '" . $roles . "' ";
+        }
+        if ($country_name != '') {
+            $sql .= " AND c.name REGEXP '" . $country_name . "' ";
+        }
+        if ($state != '') {
+            $sql .= " AND st.name REGEXP '" . $state . "' ";
+        }
+        if ($city != '') {
+            $sql.= " AND ct.name REGEXP '" . $city . "' ";
+        }
+        if ($noofemp != 0) {
+            $sql.= " AND p.no_of_employee >=".$noofemp." ";
+        }
+        if ($noofexp != 0) {
+            $sql.= " AND p.years_of_experience >=". $noofexp." ";
+        }
+        if ($iscomind != 0) {
+            $sql.= " AND p.is_company_individual =". $iscomind;
+        }
+         $sql.= " GROUP BY p.id";
+
+       
+        $sqlRes  = $this->db->query($sql)->result();
+       
+        if ($data['debug'] == 1) {
+            print_r($sql);
+            pre($sqlRes);
+        }
+        
         //$sql->limit($limit, $offset);
-        return $sql->get()->result();
+        return $sqlRes;
     }
 
     public function simple_search_count($data) {
@@ -307,10 +361,10 @@ $sql = $this->db->select('p.id as provider_id,p.*,ct.name as city_name,tea.*,pr.
                 $sql = "SELECT count(*) as count_number FROM providers WHERE is_company_individual='" . $who . "' AND status='active'";
             } else {
                 $sql = "SELECT count(*) as count_number FROM providers as u LEFT JOIN tbl_extra_roles as eer ON eer.provider_id=u.id
-			WHERE  eer.roles_of_company IS NULL AND u.status='active'";
+			WHERE  eer.roles_of_company IS NULL AND u.status='1'";
             }
         } else {
-            $sql = "SELECT count(*) as count_number FROM providers WHERE status='active'";
+            $sql = "SELECT count(*) as count_number FROM providers WHERE status='1'";
         }
         $result = $this->db->query($sql);
         $res = $result->result();
