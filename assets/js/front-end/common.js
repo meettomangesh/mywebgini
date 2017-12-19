@@ -189,3 +189,7 @@ var getRedirectParam = function (key, val) {
          setCookie('noofexp', encodeURI(noOfExpInp), 1);*/
         redirectURL(n);
     };
+    
+    var callAfterSearchAjax = function(){
+        $('.modal-trigger').leanModal();
+    }

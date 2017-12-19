@@ -199,6 +199,7 @@ siteObjJs.frontend.searchJs = function () {
                 $('#providerList').html('<div class="no-providers-found hide" >No providers found.</div>' + data);
                 draw_marker();
                 initializefeaturedData();
+                callAfterSearchAjax();
                 /*var has_more_results = $("#has_more_results").val();
                  if (has_more_results == 'true') {
                  setTimeout(loadMoreResults, 2000);
