@@ -32,8 +32,10 @@ class Signup extends CI_Controller {
         $this->load->view('old_vwSignup',$arr);
     }
 	public function check_email(){
-		$emailid = $this->input->post('emailid');
-                $is_provider_utilizer = $this->input->post('emailid');
+
+		$emailid = $this->input->post('emailId');
+
+                $is_provider_utilizer = $this->input->post('isProviderUtilizer');
 		$result = $this->Model_signup->check_email($emailid,$is_provider_utilizer);
 		if(!empty($result)){
 			echo "Email id already used!!!!!";

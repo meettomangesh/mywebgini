@@ -10,7 +10,7 @@ $this->load->view('vwHeader');
         	<div class="container">
                	<div id="signup-company">
                     <div class="top-head">
-                        <h3><i class="fa fa-briefcase" aria-hidden="true"></i> <?php if($user->is_company_individual=='company'){ ?>Company <?php }else{ ?> Individual<?php } ?> Profile</h3>
+                        <h3><i class="fa fa-briefcase" aria-hidden="true"></i> <?php if($user->is_company_individual=='2'){ ?>Company <?php }else{ ?> Individual<?php } ?> Profile</h3>
                         <p>Hey, it's easier than it looks. Take a deep breath and complete the fields below. You'll have a beautiful page!</p>
                     </div>
                     <div class="sign-form">
@@ -19,27 +19,28 @@ $this->load->view('vwHeader');
                                 <div class="row">
                                     <div class="input-field col s12">
 									<input type="hidden" name="user_id" value="<?php echo $user->id;?>">
-									  <input type="text" class="winp nr" name="company_name" value="<?php echo $user->company_name; ?>"  required>
+									  <!--<input type="text" class=" nr" name="company_name" value="<?php echo $user->company_name; ?>"  required>-->
+									  <input type="text" class=" nr" name="company_name" value="<?php echo $user->company_name; ?>"  required>
                                       <label for="first_name2">Name of the Company</label>
                                     </div>
                                     <div class="input-field col s12">
-                                      <input type="text" class="winp nr" name="website" id="website" value="<?php echo $user->website; ?>"  required>
+                                      <input type="text" class=" nr" name="website" id="website" value="<?php echo $user->website; ?>"  required>
                                       <label for="first_name2">Website</label>
                                     </div>									
 									<div class="input-field col s6">
-										<input name="emailid" id="emailid" type="text" class="winp nr" value="<?php echo $user->email; ?>" readonly>
+										<input name="emailid" id="emailid" type="text" class=" nr" value="<?php echo $user->email; ?>" readonly>
 										<label for="emailid">Email</label>
 									</div>
 									<div class="input-field col s6">
-										<input name="phone" id="phone" type="text" class="winp nr" value="<?php echo $user->phone; ?>">
+										<input name="phone" id="phone" type="text" class=" nr" value="<?php echo $user->phone; ?>">
 										<label for="extra_phone[]">Phone</label>
 									</div>
-                                    <div class="input-field s-winp col s6">
-									<input type="text" class="winp nr" name="no_of_employee" id="no_of_employee" value="<?php echo $user->no_of_employee; ?>"  required>
+                                    <div class="input-field s- col s6">
+									<input type="text" class=" nr" name="no_of_employee" id="no_of_employee" value="<?php echo $user->no_of_employee; ?>"  required>
                                       <label for="no_of_employee">No of employee</label>
                                     </div>
-                                    <div class="input-field s-winp col s6">
-									<input type="text" class="winp nr" name="years_of_experience" id="years_of_experience" value="<?php echo $user->years_of_experience; ?>"  required>
+                                    <div class="input-field s- col s6">
+									<input type="text" class=" nr" name="years_of_experience" id="years_of_experience" value="<?php echo $user->years_of_experience; ?>"  required>
 									<label for="years_of_experience">Year Established</label>
                                     </div>
                                     <div class="col s4">
@@ -57,7 +58,7 @@ $this->load->view('vwHeader');
                                     </div>
                                     <div class="col s8">
                                         <div class="input-field ab-comp">
-                                            <textarea name="about_company" id="about_company" class="materialize-textarea winp" data-length="250"><?php echo $user->about_company; ?></textarea>
+                                            <textarea name="about_company" id="about_company" class="materialize-textarea " data-length="250"><?php echo $user->about_company; ?></textarea>
                                             <label for="textarea1">Write about your company</label>
                                         </div>
                                     </div>
@@ -80,7 +81,7 @@ $this->load->view('vwHeader');
 									$longitude = explode("|",$user->longitude);
 									$as_head_office = explode("|",$user->as_head_office);
 									$address_id = explode("|",$user->address_id);
-									
+                                 	
 								if(isset($ctry) && count($ctry)>0){	
 								for($i=0; $i<count($ctry); $i++){	
 								?>
@@ -88,10 +89,10 @@ $this->load->view('vwHeader');
                                     <div class="row">
                                         <div class="input-field col s12">
 										<input type="hidden" id="address_id_<?php echo ($i+1); ?>" name="address_id[]" value="<?php echo $address_id[$i];?>">
-                                          <input id="address_<?php echo ($i+1); ?>" type="text" class="winp nr" name="address[]" value="<?php echo $address[$i]; ?>">
+                                          <input id="address_<?php echo ($i+1); ?>" type="text" class=" nr" name="address[]" value="<?php echo $address[$i]; ?>">
                                           <label for="address[]">Address</label>
                                         </div>
-                                        <div class="input-field s-winp col s6">
+                                        <div class="input-field s- col s6">
                                             <select name="country_name[]" id="country_name_<?php echo ($i+1); ?>" class="form-control" onchange="get_states(this.id,this.value);">
 										<option value="">Select Country</option>
 										<?php foreach($countries as $country){ ?>
@@ -100,33 +101,33 @@ $this->load->view('vwHeader');
 									</select>
 									<label for="country_name[]">Country</label>                        
 									</div>
-                                        <div id="state_<?php echo ($i+1); ?>" class="input-field s-winp col s6">
+                                        <div id="state_<?php echo ($i+1); ?>" class="input-field s- col s6">
                                             <select name="state_name[]" id="state_name_<?php echo ($i+1); ?>" class="form-control">
 											<option value="<?php echo $ste_ids[$i];?>" ><?php echo $ste[$i]; ?></option>
 										</select>
 										<label for="state_name[]">State</label> 
                                         </div>										
-                                        <div id="city_<?php echo ($i+1); ?>" class="input-field s-winp col s6">
+                                        <div id="city_<?php echo ($i+1); ?>" class="input-field s- col s6">
                                             <select name="city_name[]" id="city_name_<?php echo ($i+1); ?>" class="form-control">
 											<option value="<?php echo $cty_ids[$i];?>" ><?php echo $cty[$i]; ?></option>
 										</select><label for="city_name[]">City</label> 
                                         </div>
                                         <div class="input-field col s6">
-                                            <input id="landmark_<?php echo ($i+1); ?>" name="landmark[]" type="text" class="winp nr" value="<?php echo $landmark[$i]; ?>">
+                                            <input id="landmark_<?php echo ($i+1); ?>" name="landmark[]" type="text" class=" nr" value="<?php echo $landmark[$i]; ?>">
                                             <label for="landmark[]">Landmark</label>
                                         </div>
                                         <div class="input-field col s6">
-                                            <input name="extra_emailid[]" id="extra_emailid_<?php echo ($i+1); ?>" type="text" class="winp nr" value="<?php echo $extra_emailid[$i]; ?>">
+                                            <input name="extra_emailid[]" id="extra_emailid_<?php echo ($i+1); ?>" type="text" class=" nr" value="<?php echo $extra_emailid[$i]; ?>">
                                             <label for="extra_emailid[]">Email</label>
                                         </div>
                                         <div class="input-field col s6">
-                                            <input name="extra_phone[]" id="extra_phone_<?php echo ($i+1); ?>" type="text" class="winp nr" value="<?php echo $extra_phone[$i]; ?>">
+                                            <input name="extra_phone[]" id="extra_phone_<?php echo ($i+1); ?>" type="text" class=" nr" value="<?php echo $extra_phone[$i]; ?>">
                                             <label for="extra_phone[]">Phone</label>
                                         </div>
                                     </div>
                                     <div class="mt10">
                                         <div class="right">							
-                                          <input type="radio" class="filled-in" id="as_head_office_<?php echo ($i+1); ?>" name="as_head_office" <?php if($as_head_office[$i]=='yes'){ echo "checked"; }?> value="<?php echo ($i+1); ?>" />
+                                          <input type="radio" class="filled-in" id="as_head_office_<?php echo ($i+1); ?>" name="as_head_office" <?php if($as_head_office[$i]=='1'){ echo "checked"; }?> value="<?php echo ($i+1); ?>" />
                                           <label id="lbl_as_head_office_<?php echo ($i+1); ?>" for="as_head_office_<?php echo ($i+1); ?>">Mark as Headoffice</label>
                                         </div>
                                         <div class="edit-del"><a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a></div>
@@ -138,10 +139,10 @@ $this->load->view('vwHeader');
                                     <div class="row">
                                         <div class="input-field col s12">
 										<input type="hidden" id="address_id_1" name="address_id[]" value="">
-                                          <input id="address_1" type="text" class="winp nr" name="address[]" value="">
+                                          <input id="address_1" type="text" class=" nr" name="address[]" value="">
                                           <label for="address[]">Address</label>
                                         </div>
-                                        <div class="input-field s-winp col s6">
+                                        <div class="input-field s- col s6">
                                             <select name="country_name[]" id="country_name_1" class="form-control" onchange="get_states(this.id,this.value);">
 										<option value="">Select Country</option>
 										<?php foreach($countries as $country){ ?>
@@ -150,27 +151,27 @@ $this->load->view('vwHeader');
 									</select>
 									<label for="country_name[]">Country</label>                        
 									</div>
-                                        <div id="state_1" class="input-field s-winp col s6">
+                                        <div id="state_1" class="input-field s- col s6">
                                             <select name="state_name[]" id="state_name_1" class="form-control">
 											<option value="">Select State</option>
 										</select>
 										<label for="state_name[]">State</label> 
                                         </div>										
-                                        <div id="city_1" class="input-field s-winp col s6">
+                                        <div id="city_1" class="input-field s- col s6">
                                             <select name="city_name[]" id="city_name_1" class="form-control">
 											<option value="" >Select City</option>
 										</select><label for="city_name[]">City</label> 
                                         </div>
                                         <div class="input-field col s6">
-                                            <input id="landmark_1" name="landmark[]" type="text" class="winp nr" value="">
+                                            <input id="landmark_1" name="landmark[]" type="text" class=" nr" value="">
                                             <label for="landmark[]">Landmark</label>
                                         </div>
                                         <div class="input-field col s6">
-                                            <input name="extra_emailid[]" id="extra_emailid_1" type="text" class="winp nr" value="1">
+                                            <input name="extra_emailid[]" id="extra_emailid_1" type="text" class=" nr" value="1">
                                             <label for="extra_emailid[]">Email</label>
                                         </div>
                                         <div class="input-field col s6">
-                                            <input name="extra_phone[]" id="extra_phone_1" type="text" class="winp nr" value="">
+                                            <input name="extra_phone[]" id="extra_phone_1" type="text" class=" nr" value="">
                                             <label for="extra_phone[]">Phone</label>
                                         </div>
                                     </div>
@@ -213,15 +214,15 @@ $this->load->view('vwHeader');
                                         <div class="input-field">
                                           <input type="hidden" id="member_id_<?php echo ($i+1); ?>" name="member_id[]" value="<?php echo $members[$i]->id; ?>">
 										  
-										  <input id="member_name_<?php echo ($i+1); ?>" name="member_name[]" type="text" class="winp nr" value="<?php echo $members[$i]->member_name; ?>">
+										  <input id="member_name_<?php echo ($i+1); ?>" name="member_name[]" type="text" class=" nr" value="<?php echo $members[$i]->member_name; ?>">
                                           <label for="member_name[]">Name</label>
                                         </div>
                                         <div class="input-field">
-                                          <input id="member_designation_<?php echo ($i+1); ?>" name="member_designation[]" type="text" class="winp nr" value="<?php echo $members[$i]->member_designation; ?>">
+                                          <input id="member_designation_<?php echo ($i+1); ?>" name="member_designation[]" type="text" class=" nr" value="<?php echo $members[$i]->member_designation; ?>">
                                           <label for="member_designation[]">Designation</label>
                                         </div>
                                         <div class="input-field ab-brif">
-                                            <textarea  id="member_description_<?php echo ($i+1); ?>" name="member_description[]" class="materialize-textarea winp" data-length="100"><?php echo $members[$i]->member_description; ?></textarea>
+                                            <textarea  id="member_description_<?php echo ($i+1); ?>" name="member_description[]" class="materialize-textarea " data-length="100"><?php echo $members[$i]->member_description; ?></textarea>
                                             <label for="member_description[]">Write about your company</label>
                                         </div>
                                     </div>  
@@ -243,15 +244,15 @@ $this->load->view('vwHeader');
                                     <div class="col s8">
                                         <div class="input-field">
                                           <input type="hidden" id="member_id_1" name="member_id[]">
-										  <input id="member_name_1" name="member_name[]" type="text" class="winp nr">
+										  <input id="member_name_1" name="member_name[]" type="text" class=" nr">
                                           <label for="member_name[]">Name</label>
                                         </div>
                                         <div class="input-field">
-                                          <input id="member_designation_1" name="member_designation[]" type="text" class="winp nr">
+                                          <input id="member_designation_1" name="member_designation[]" type="text" class=" nr">
                                           <label for="member_designation[]">Designation</label>
                                         </div>
                                         <div class="input-field ab-brif">
-                                            <textarea  id="member_description_1" name="member_description[]" class="materialize-textarea winp" data-length="100"></textarea>
+                                            <textarea  id="member_description_1" name="member_description[]" class="materialize-textarea " data-length="100"></textarea>
                                             <label for="member_description[]">Write about your company</label>
                                         </div>
                                     </div>  
@@ -271,15 +272,15 @@ $this->load->view('vwHeader');
                                     <div class="col s12">
                                         <div class="input-field">
 										<input type="hidden" id="portfolio_id_<?php echo ($i+1);?>" name="portfolio_id[]" value="<?php echo $portfolios[$i]->id; ?>">
-                                          <input id="portfolio_url_<?php echo ($i+1);?>" name="portfolio_url[]" type="text" class="winp nr" value="<?php echo $portfolios[$i]->portfolio_url; ?>">
+                                          <input id="portfolio_url_<?php echo ($i+1);?>" name="portfolio_url[]" type="text" class=" nr" value="<?php echo $portfolios[$i]->portfolio_url; ?>">
                                           <label for="portfolio_url[]">Project URL</label>
                                         </div>
                                         <div class="input-field">
-                                          <input id="portfolio_features_<?php echo ($i+1);?>" name="portfolio_features[]" type="text" class="winp nr" value="<?php echo $portfolios[$i]->portfolio_features; ?>">
+                                          <input id="portfolio_features_<?php echo ($i+1);?>" name="portfolio_features[]" type="text" class=" nr" value="<?php echo $portfolios[$i]->portfolio_features; ?>">
                                           <label for="portfolio_features[]">Features / Functions You Deployed  </label>
                                         </div>
                                         <div class="input-field ab-brif">
-                                            <textarea name="portfolio_description[]" id="portfolio_description_<?php echo ($i+1);?>" class="materialize-textarea winp" data-length="100"><?php echo $portfolios[$i]->portfolio_description; ?></textarea>
+                                            <textarea name="portfolio_description[]" id="portfolio_description_<?php echo ($i+1);?>" class="materialize-textarea " data-length="100"><?php echo $portfolios[$i]->portfolio_description; ?></textarea>
                                             <label for="portfolio_description[]">Project description</label>
                                         </div>
                                     </div>
@@ -289,15 +290,15 @@ $this->load->view('vwHeader');
                                     <div class="col s12">
                                         <div class="input-field">
 										<input type="hidden" id="portfolio_id_1" name="portfolio_id[]">
-                                          <input id="portfolio_url_1" name="portfolio_url[]" type="text" class="winp nr">
+                                          <input id="portfolio_url_1" name="portfolio_url[]" type="text" class=" nr">
                                           <label for="portfolio_url[]">Project URL</label>
                                         </div>
                                         <div class="input-field">
-                                          <input id="portfolio_features_1" name="portfolio_features[]" type="text" class="winp nr">
+                                          <input id="portfolio_features_1" name="portfolio_features[]" type="text" class=" nr">
                                           <label for="portfolio_features[]">Features / Functions You Deployed  </label>
                                         </div>
                                         <div class="input-field ab-brif">
-                                            <textarea name="portfolio_description[]" id="portfolio_description_1" class="materialize-textarea winp" data-length="100"></textarea>
+                                            <textarea name="portfolio_description[]" id="portfolio_description_1" class="materialize-textarea " data-length="100"></textarea>
                                             <label for="portfolio_description[]">Project description</label>
                                         </div>
                                     </div>
@@ -353,7 +354,7 @@ $this->load->view('vwHeader');
 			  <label for="rating_chk_<?php echo $skillsets[$i]->id; ?>"><?php echo $skillsets[$i]->skill; ?></label>
 			</td>
 			<td>
-				<div class="input-field s-winp">
+				<div class="input-field s-">
 					<select name="rates_to_role_<?php echo $skillsets[$i]->id; ?>" id="rates_to_role_<?php echo $skillsets[$i]->id; ?>" <?php if(!in_array($skillsets[$i]->id,$user_skill)){ ?> disabled <?php } ?>>		  
 					  <option value="">Select</option>
 					  <?php 					  
@@ -369,7 +370,7 @@ $this->load->view('vwHeader');
 				</div>
 			</td>
 			<td>
-				<div class="input-field s-winp">
+				<div class="input-field s-">
 					<select name="no_of_projects_<?php echo $skillsets[$i]->id; ?>" id="no_of_projects_<?php echo $skillsets[$i]->id; ?>"  <?php if(!in_array($skillsets[$i]->id,$user_skill)){ ?> disabled <?php } ?>>		  
 					  <option value="">Select</option>
 					  <?php 

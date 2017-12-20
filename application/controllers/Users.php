@@ -9,6 +9,7 @@ class Users extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model('Model_users');
+        $this->load->model('Model_search');
         $this->load->model('Model_countries');
         $this->load->model('Model_signup');
         $this->load->helper(array('form', 'url'));
@@ -16,7 +17,7 @@ class Users extends CI_Controller {
 
     public function insert_user() {
         //echo "<pre>";print_r($_POST);die;
-        $config['upload_path'] = './images/';
+        $config['upload_path'] = '' . getcwd() . '/assets/img/';
         $config['allowed_types'] = '*';
         $config['max_size'] = 500;
         $config['max_width'] = 1024;
@@ -69,6 +70,7 @@ class Users extends CI_Controller {
             $is_provider_utilizer = $this->session->userdata('is_provider_utilizer');
             $data['page'] = 'edit_profile';
             $users = $this->Model_users->get_user($user_id,$is_provider_utilizer);
+            //pre($users);
             $data['users'] = $users;
             $members = $this->Model_users->get_members($user_id);
             $data['members'] = $members;
@@ -81,7 +83,7 @@ class Users extends CI_Controller {
             $data['countries'] = $countries;
             $skillsets = $this->Model_signup->skillset_list();
             $data['skillsets'] = $skillsets;
-
+            $data['footer_skills'] = $this->Model_search->getFooterSkills();
             $this->load->view('vwEditProfile', $data);
         } else {
             redirect('/home');
@@ -89,20 +91,21 @@ class Users extends CI_Controller {
     }
 
     public function update_user() {
+        $is_provider_utilizer = $this->session->userdata('is_provider_utilizer');
         //echo "<pre>";print_r($_POST);die;
         if (isset($_FILES) && isset($_FILES['userfile']) && $_FILES['userfile']['name'] != '') {
-            $config['upload_path'] = '' . getcwd() . '/images/';
+             $config['upload_path'] = '' . getcwd() . '/assets/img/';
             $config['allowed_types'] = '*';
             $config['max_size'] = 500;
             $config['max_width'] = 1024;
             $config['max_height'] = 768;
-
             $this->load->library('upload', $config);
             if (!$this->upload->do_upload('userfile')) {
                 $error = array('error' => $this->upload->display_errors());
             } else {
                 $data = array('upload_data' => $this->upload->data());
             }
+
         }
 
         if (isset($_FILES) && isset($_FILES['userfile']) && $_FILES['userfile']['name'] != '') {
@@ -122,9 +125,9 @@ class Users extends CI_Controller {
                 $mapLong = $map[1];
                 //echo "==".$_POST['address_id'][$i]."**";die;
                 if ($_POST['as_head_office'] == ($i + 1)) {
-                    $as_head_office = 'yes';
+                    $as_head_office = '1';
                 } else {
-                    $as_head_office = 'no';
+                    $as_head_office = '0';
                 }
                 if (isset($_POST['address_id'][$i]) && $_POST['address_id'][$i] != '0' && $_POST['address_id'][$i] != '') {
                     $this->Model_users->update_address($_POST['address_id'][$i], $_POST['address'][$i], $_POST['landmark'][$i], $_POST['city_name'][$i], $_POST['state_name'][$i], $_POST['country_name'][$i], $mapLat, $mapLong, $_POST['extra_emailid'][$i], $_POST['extra_phone'][$i], $as_head_office);
@@ -137,7 +140,7 @@ class Users extends CI_Controller {
         //upload member photo
         $file_name = array();
         if (isset($_FILES) && isset($_FILES['member_image']) && count($_FILES['member_image']) > 0) {
-            $config['upload_path'] = '' . getcwd() . '/images/members';
+            $config['upload_path'] = '' . getcwd() . '/assets/img/members/';
             $config['allowed_types'] = '*';
             $config['max_size'] = 500;
             $config['max_width'] = 1024;
@@ -206,13 +209,21 @@ class Users extends CI_Controller {
         $data['members'] = $members;
         $portfolios = $this->Model_users->get_portfolios($user_id);
         $data['portfolios'] = $portfolios;
-        $skills = $this->Model_users->getSkills($user_id);
+        $skills = $this->Model_users->getSkillsRolesByProviderUtilizerId($user_id,$is_provider_utilizer);
         $data['skills'] = $skills;
         $countries = $this->Model_countries->countries_list();
         $data['countries'] = $countries;
         $skillsets = $this->Model_signup->skillset_list();
         $data['skillsets'] = $skillsets;
-        $this->load->view('vwDashboard', $data);
+        $data['footer_skills'] = $this->Model_search->getFooterSkills();
+        $enquiry = $this->Model_users->getEnquiriesByProviderUtilizerId($user_id, $is_provider_utilizer);
+        $data['enquiry'] = $enquiry;
+
+                if ($is_provider_utilizer == 'provider') {
+            $this->load->view('vwDashboardProvider', $data);
+        } else {
+            $this->load->view('vwDashboard', $data);
+        }
     }
 
     // function to get  the address

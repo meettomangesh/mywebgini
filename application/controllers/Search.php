@@ -32,9 +32,9 @@ class Search extends CI_Controller {
         $data['profiles'] = $result;
         $data['page'] = "search";
         $data['total_count'] = $this->Model_search->total_count('');
-        $data['company_count'] = $this->Model_search->total_count('company');
-        $data['individual_count'] = $this->Model_search->total_count('individual');
-        $data['other_skills_count'] = $this->Model_search->total_count('other_skills');
+        $data['company_count'] = $this->Model_search->total_count(2);
+        $data['individual_count'] = $this->Model_search->total_count(1);
+        $data['other_skills_count'] = $this->Model_search->total_count(0);
         $data['skills'] = $this->Model_search->getSkillsArray();
         $k = 0;
        // pre($data['skills']);
@@ -220,6 +220,25 @@ class Search extends CI_Controller {
     /* public function hire_expert(){
 
       } */
+
+      public function save_provider(){
+          $provider_id = $this->input->post('provider_id');
+          $email_address = $this->input->post('email_address');
+          $result = $this->Model_search->addSaveForLater($provider_id,$email_address);
+          $response = array();
+          
+        if ($result) {
+            $response['from'] = 'save-provider';
+            $response['status'] = 'Success';
+            $response['message'] = 'Provider saved succesfully.';
+           
+        } else {
+            $response['from'] = 'send-payment';
+            $response['status'] = 'Error';            
+            $response['message'] = 'Provider is already exist.';
+        }
+        $this->output->set_output(json_encode($response));
+          }
 }
 
 ?>

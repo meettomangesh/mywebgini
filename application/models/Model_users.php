@@ -240,7 +240,7 @@ class Model_users extends CI_Model {
 
     public function update_user($data, $file_name) {
         //echo "<pre>";print_r($data);die;
-        $sql = "UPDATE tbl_user SET
+        $sql = "UPDATE providers SET
 		company_name='" . $data['company_name'] . "',
 		phone='" . $data['phone'] . "',
 		years_of_experience='" . $data['years_of_experience'] . "',
@@ -262,8 +262,8 @@ class Model_users extends CI_Model {
 		country='" . $country_name . "',
 		state='" . $state_name . "',
 		city='" . $city_name . "',
-		address='" . $address . "',
-		landmark='" . $landmark . "',
+		address_line1='" . $address . "',
+		address_line2='" . $landmark . "',
 		latitude='" . $latitude . "',
 		longitude='" . $longitude . "',
 		as_head_office='" . $as_head_office . "'
@@ -347,7 +347,7 @@ class Model_users extends CI_Model {
 
     public function update_roles_of_company($id, $roles_of_company, $rates_to_role, $no_of_projects) {
 
-        $sql = "SELECT id FROM tbl_extra_roles WHERE user_id='" . $this->session->userdata('id') . "' AND id='" . $id . "'";
+        $sql = "SELECT id FROM tbl_extra_roles WHERE provider_id='" . $this->session->userdata('id') . "' AND id='" . $id . "'";
 
         $result = $this->db->query($sql);
         $res = $result->result();

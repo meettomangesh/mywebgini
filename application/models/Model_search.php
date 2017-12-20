@@ -357,8 +357,8 @@ WHERE `p`.`status` = '1'";
     public function total_count($who = '') {
         $data = array();
         if ($who != '') {
-            if ($who != 'other_skills') {
-                $sql = "SELECT count(*) as count_number FROM providers WHERE is_company_individual='" . $who . "' AND status='active'";
+            if ($who != 0) {
+                $sql = "SELECT count(*) as count_number FROM providers WHERE is_company_individual='" . $who . "' AND status='1'";
             } else {
                 $sql = "SELECT count(*) as count_number FROM providers as u LEFT JOIN tbl_extra_roles as eer ON eer.provider_id=u.id
 			WHERE  eer.roles_of_company IS NULL AND u.status='1'";
@@ -453,6 +453,36 @@ WHERE `p`.`status` = '1'";
         return $result->result();
     }
 
+    public function addSaveForLater($provider_id,$email_address){
+
+        /*
+         CREATE TABLE `save_for_later` (
+  `id` int(11) NOT NULL,
+  `provider_id` int(11) NOT NULL,
+  `email_address` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+         * */
+
+                $this->db->where('provider_id',$provider_id);
+                $this->db->where('email_address',$email_address);
+    $query = $this->db->get('save_for_later');
+
+    if ($query->num_rows() > 0){
+        return false;
+    }
+    else{
+                    $saveForLaterData = array(
+                'provider_id' => $provider_id,
+                'email_address' => $email_address,
+            );
+
+            $result = $this->db->insert('save_for_later', $saveForLaterData);
+            return $result;
+    }
+    
+
+        }
 }
 
 ?>

@@ -205,13 +205,10 @@ var validateEntry = function (providerId) {
         $('#save_iternary_showerror').removeClass('hide');
         $('#save_iternary_showerror').html('Please enter a valid email address.');
     }
-    console.log(emailsave1.val());
-    return false;
+ 
     if (emailsave1.hasClass("error")) {
         return false;
     } else {
-        console.log(emailsave1);
-        return false;
         saveForLaterEntry(providerId);
     }
 }
@@ -220,12 +217,26 @@ var saveForLaterEntry = function (providerId) {
     var modalObj = '#modal_' + providerId;
     var email_address = $(modalObj + ' #emailsave1').val();
     var n = "/";
-
+                    $(modalObj +' #save_iternary_showerror').addClass('hide');
+                    $(modalObj +' #save_iternary_showerror').html('');
     $.ajax({
         type: 'POST',
         data: {'provider_id': providerId, 'email_address': email_address},
         url: baseUrl + '/search/save_provider',
         success: function (response) {
+            var response = $.parseJSON(response);//parse JSON
+            console.log(response);
+            console.log(response.status);
+            if(response.status == 'Success'){
+                var resp = '';
+                resp += "<div id='save-title' class=''>";
+                 resp += "<b>"+response.message+"</b>";
+                 resp += "</div>";
+               $(modalObj +' .modal-content').html(resp);
+                } else {
+                    $(modalObj +' #save_iternary_showerror').removeClass('hide');
+                    $(modalObj +' #save_iternary_showerror').html(response.message);
+                    }
 
         }
     });
