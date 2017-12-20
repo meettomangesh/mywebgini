@@ -49,51 +49,100 @@ if (isset($profiles) && !empty($profiles)) {
                     </div>
                     <div class="card-action">
                         <span class="ver-box"><?php echo ($profile->is_verified == 1) ? 'Verified' : 'Not Verified'; ?></span>
-<!--                        <a href="javascript:saveForLater('<?php echo $profile->provider_id; ?>')" class="save-lat"><i class="fa fa-clock-o" aria-hidden="true"></i> Save For Later</a>-->
+        <!--                        <a href="javascript:saveForLater('<?php echo $profile->provider_id; ?>')" class="save-lat"><i class="fa fa-clock-o" aria-hidden="true"></i> Save For Later</a>-->
                         <a href="#modal_<?php echo $profile->provider_id; ?>" class=" modal-trigger save-lat"><i class="fa fa-clock-o" aria-hidden="true"></i> Save For Later</a>
                         <a href="javascript:contactNow('<?php echo $profile->provider_id; ?>')" class="cont-box"><i class="fa fa-envelope" aria-hidden="true"></i> Contact Now</a>
                     </div>
                 </div>
             </div>
-            <div id="modal_<?php echo $profile->provider_id; ?>" class="modal">
-            <div class="modal-content">
-                    <div id="save-header" class="pure-g m-c">
+            <div id="modal_<?php echo $profile->provider_id; ?>" class="modal provider-save">
+                <div class="modal-content">
+                    <div id="save-header">
+                    <div class="pure-u-1  pure-u-md-22-24" id="hotel-info-wrapper" style="margin-left: 15px;">
                         <div class="comp-n"><?php echo $profile->company_name; ?></div>
-                            <div class="comp-rate">
-                                <span class="rating">
-                                    <?php
-                                    for ($i = 1; $i <= 5; $i++) {
-                                        echo "<span class='star" . (($i <= $profile->average_rating) ? ' active' : '') . "'></span>";
-                                    }
-                                    ?>
-                                </span>
-                                <span class="rec-tex"><?php echo ($profile->rating_count) ? $profile->rating_count : 0; ?> Reviews</span>
-                            </div>
-
-                    </div>
-             
-                <nav class="red">
-                    <div class="nav-wrapper">
-                        <div class="left col s12 m5 l5">
-                            <ul>
-                                <li><a href="#!" class="email-menu"><i class="modal-action modal-close  mdi-hardware-keyboard-backspace"></i></a>
-                                </li>
-                                <li><a href="#!" class="email-type">Save for Later</a></li>    
-                            </ul>
-                        </div>
-                        <div class="col s12 m7 l7 hide-on-med-and-down">
-                            <ul class="right">
-                                <li><a href="javascript:void(0);"><i class="modal-action modal-close  mdi-content-send"></i></a>
-                                </li>
-                            </ul>
+                        <div class="comp-rate">
+                            <span class="rating">
+                                <?php
+                                for ($i = 1; $i <= 5; $i++) {
+                                    echo "<span class='star" . (($i <= $profile->average_rating) ? ' active' : '') . "'></span>";
+                                }
+                                ?>
+                            </span>
+                            <span class="rec-tex"><?php echo ($profile->rating_count) ? $profile->rating_count : 0; ?> Reviews</span>
                         </div>
 
                     </div>
-                </nav>
+                    </div>
+
+                    <div id="save-title" class="">
+                        <b>Save for Later</b>
+                    </div>
+                    <div class="row">
+                        <div class="col s1"></div>
+                        <div class="input-field col s10">
+                            <input id="emailsave1" data-rule-required="true" name="emailsave1" type="text"  class="validate">
+                            <label for="emailsave1">Email Address</label>
+                            <label id="save_iternary_showerror" class="error hide" ></label>
+                        </div>
+                        <div class="col s1"></div>
+                    </div>
+
+                </div>
+                <div id="form-actions" class="modal-footer">
+                    <input id="save_iternary_submit_btn" value="Submit" class="btn pure-button pure-input-1 curved ie-curved" type="button" onclick="validateEntry(<?php echo $profile->provider_id; ?>);">
+                </div>
             </div>
 
-        </div>
-        
+            <!--
+            
+            <div id="modal_<?php echo $profile->provider_id; ?>" class="modal">
+                <div class="modal-content">
+                    <div id="save-header" class="pure-g m-c">
+                        <div class="comp-n"><?php echo $profile->company_name; ?></div>
+                        <div class="comp-rate">
+                            <span class="rating">
+            <?php
+            for ($i = 1; $i <= 5; $i++) {
+                echo "<span class='star" . (($i <= $profile->average_rating) ? ' active' : '') . "'></span>";
+            }
+            ?>
+                            </span>
+                            <span class="rec-tex"><?php echo ($profile->rating_count) ? $profile->rating_count : 0; ?> Reviews</span>
+                        </div>
+
+                    </div>
+
+                    <nav class="red">
+                        <div class="nav-wrapper">
+                            <div class="left col s12 m5 l5">
+                                <ul>
+                                    <li><a href="#!" class="email-menu"><i class="modal-action modal-close  mdi-hardware-keyboard-backspace"></i></a>
+                                    </li>
+                                    <li><a href="#!" class="email-type">Save for Later</a></li>    
+                                </ul>
+                            </div>
+                            <div class="col s12 m7 l7 hide-on-med-and-down">
+                                <ul class="right">
+                                    <li><a href="validateEntry()"><i class="modal-action modal-close  mdi-content-send"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <div class="col s2"></div>
+                                <div class="input-field col s8">
+                                    <input id="emailsave1" data-rule-required="true" name="emailsave1" type="text"  class="validate">
+                                    <label for="emailsave1">Email Address</label>
+                                    <label id="save_iternary_showerror" class="error hide" ></label>
+                                </div>
+                                <div class="col s2"></div>
+                            </div>
+
+                        </div>
+                    </nav>
+                </div>
+
+            </div>
+            -->
             <?php
         }
     } else {

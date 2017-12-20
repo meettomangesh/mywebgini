@@ -3,7 +3,7 @@ var theMap = $('.map-canvas,#google-map');
 var theHeight = $(window).height();
 var theWidth = $(window).width();
 var baseUrl = window.location.origin + '/mywebgini';
-var baseUrlImg = baseUrl+'/assets/img/';
+var baseUrlImg = baseUrl + '/assets/img/';
 var cookiePath = 'mywebgini';
 var activeSearchForm = 'simple_search_form';
 var provider_list = provider_utilizer_list = validProviderIds = filterProviderClass = [];
@@ -170,26 +170,63 @@ var getRedirectParam = function (key, val) {
 
 
 };
-     var submit_search_header_form = function () {
-        var skillsInp = getParamFrmCookie('skills');
-        var n = "";
-        n = baseUrl + "/search/";
-        n += "?skills=" + encodeURI(skillsInp);
-        /*n += "&country=" + encodeURI(countryInp);
-         n += "&city=" + encodeURI(cityInp);
-         n += "&state=" + encodeURI(stateInp);
-         n += "&noofemp=" + encodeURI(noOfEmpInp);
-         n += "&noofexp=" + encodeURI(noOfExpInp);*/
-        n += "&random=" + (100000 + Math.floor(Math.random() * 899999));
-        /* setCookie('skills', encodeURI($("#skills").val()), 1);
-         setCookie('country', encodeURI(stateInp), 1);
-         setCookie('city', encodeURI(cityInp), 1);
-         setCookie('state', encodeURI(stateInp), 1);
-         setCookie('noofemp', encodeURI(noOfEmpInp), 1);
-         setCookie('noofexp', encodeURI(noOfExpInp), 1);*/
-        redirectURL(n);
-    };
-    
-    var callAfterSearchAjax = function(){
-        $('.modal-trigger').leanModal();
+var submit_search_header_form = function () {
+    var skillsInp = getParamFrmCookie('skills');
+    var n = "";
+    n = baseUrl + "/search/";
+    n += "?skills=" + encodeURI(skillsInp);
+    /*n += "&country=" + encodeURI(countryInp);
+     n += "&city=" + encodeURI(cityInp);
+     n += "&state=" + encodeURI(stateInp);
+     n += "&noofemp=" + encodeURI(noOfEmpInp);
+     n += "&noofexp=" + encodeURI(noOfExpInp);*/
+    n += "&random=" + (100000 + Math.floor(Math.random() * 899999));
+    /* setCookie('skills', encodeURI($("#skills").val()), 1);
+     setCookie('country', encodeURI(stateInp), 1);
+     setCookie('city', encodeURI(cityInp), 1);
+     setCookie('state', encodeURI(stateInp), 1);
+     setCookie('noofemp', encodeURI(noOfEmpInp), 1);
+     setCookie('noofexp', encodeURI(noOfExpInp), 1);*/
+    redirectURL(n);
+};
+
+var callAfterSearchAjax = function () {
+    $('.modal-trigger').leanModal();
+}
+
+var validateEntry = function (providerId) {
+    var modalObj = '#modal_' + providerId;
+    var emailsave1 = $(modalObj + ' #emailsave1');
+    emailsave1.removeClass('error');
+    var emailsave1_val = emailsave1.val();
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if (emailsave1_val != '' && !filter.test(emailsave1_val)) {
+        emailsave1.addClass('error');
+        $('#save_iternary_showerror').removeClass('hide');
+        $('#save_iternary_showerror').html('Please enter a valid email address.');
     }
+    console.log(emailsave1.val());
+    return false;
+    if (emailsave1.hasClass("error")) {
+        return false;
+    } else {
+        console.log(emailsave1);
+        return false;
+        saveForLaterEntry(providerId);
+    }
+}
+
+var saveForLaterEntry = function (providerId) {
+    var modalObj = '#modal_' + providerId;
+    var email_address = $(modalObj + ' #emailsave1').val();
+    var n = "/";
+
+    $.ajax({
+        type: 'POST',
+        data: {'provider_id': providerId, 'email_address': email_address},
+        url: baseUrl + '/search/save_provider',
+        success: function (response) {
+
+        }
+    });
+}

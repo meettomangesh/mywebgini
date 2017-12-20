@@ -1170,3 +1170,36 @@ table .s-winp .select-wrapper input.select-dropdown {
 
     color: rgba(0,0,0,0.6);
 }
+
+.provider-save #save-title{
+    text-align: center;
+    background: #e9eff5;
+    padding: 14px 0;
+}
+
+.provider-save #save-title b {
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 400;
+    margin-bottom: 9px;
+    color: #4D4D4E;
+}
+
+.provider-save #save-header {
+    padding: 21px 0 29px;
+}
+
+.provider-save #form-actions #save_iternary_submit_btn{
+    width: 305px;
+    margin: 0 auto; 
+    display: block;
+    height: 40px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    float: unset;
+}
+
+.provider-save #save-form {
+    padding: 39px 32px 20px;
+}

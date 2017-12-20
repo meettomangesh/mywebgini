@@ -13,14 +13,14 @@ $this->load->view('vwHeader');
                         <div class="sres-sort">
                             <a href="" class="sort-ic sort-th active"><i class="fa fa-th-large" aria-hidden="true"></i></a>
                             <a href="" class="sort-ic sort-li"><i class="fa fa-th-list" aria-hidden="true"></i></a>
-                            <div class="input-field">
+<!--                            <div class="input-field">
                                 <select>
                                     <option value="" disabled selected>Sort By</option>
                                     <option value="1">Price</option>
                                     <option value="2">Price</option>
                                     <option value="3">Price</option>
                                 </select>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <div class="sblock-list">
