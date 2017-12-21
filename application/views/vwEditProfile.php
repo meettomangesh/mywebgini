@@ -41,8 +41,8 @@ $this->load->view('vwHeader');
                                     </div>
                                     <div class="input-field s- col s6">
 									<input type="text" class=" nr" name="years_of_experience" id="years_of_experience" value="<?php echo $user->years_of_experience; ?>"  required>
-									<label for="years_of_experience">Year Established</label>
-                                    </div>
+									<label for="years_of_experience">Years of experience </label>
+                                    </div>1
                                     <div class="col s4">
                                         <div class="up-logo">
                                             <label>Company Logo</label>

@@ -48,7 +48,8 @@ if (isset($profiles) && !empty($profiles)) {
                             ?></div>
                     </div>
                     <div class="card-action">
-                        <span class="ver-box"><?php echo ($profile->is_verified == 1) ? 'Verified' : 'Not Verified'; ?></span>
+                        <!--<span class="ver-box"><?php echo ($profile->is_verified == 1) ? 'Verified' : 'Not Verified'; ?></span>-->
+                        <?php echo ($profile->is_verified == 1) ? '<span class="ver-box">Verified</span>' : '<span class="not-ver-box">Not Verified</span>'; ?>
         <!--                        <a href="javascript:saveForLater('<?php echo $profile->provider_id; ?>')" class="save-lat"><i class="fa fa-clock-o" aria-hidden="true"></i> Save For Later</a>-->
                         <a href="#modal_<?php echo $profile->provider_id; ?>" class=" modal-trigger save-lat"><i class="fa fa-clock-o" aria-hidden="true"></i> Save For Later</a>
                         <a href="javascript:contactNow('<?php echo $profile->provider_id; ?>')" class="cont-box"><i class="fa fa-envelope" aria-hidden="true"></i> Contact Now</a>

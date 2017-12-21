@@ -89,10 +89,10 @@ $this->load->view('vwHeader');
                                 </div> 
                                 <div class="row">
                                     <div class="input-field  col s6">
-                                        <select id="country_name" class="gmap-blur" name="country_name" onChange="get_states_by_name(this.value);">
+                                        <select id="country_name" class="gmap-blur" name="country_name" onChange="get_states(this.value);">
                                             <option value="">Select Country</option>
                                             <?php foreach ($countries as $country) { ?>
-                                                <option value="<?php echo $country->name; ?>"><?php echo $country->name; ?></option>
+                                                <option value="<?php echo $country->id; ?>"><?php echo $country->name; ?></option>
                                             <?php } ?>
                                         </select>
                                         <span style="color:red;" id="country_name_error_message"></span>

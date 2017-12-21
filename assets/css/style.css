@@ -741,9 +741,20 @@ h4.gr-head {
 }
 .sblock-list .card .card-action span {
     margin-right: 10px;
-    padding-left: 20px;
-    background: url(../img/ver-img.png) no-repeat left 7px;
+    padding-left: 17px;
+    /*background: url(../img/ver-img.png) no-repeat left 7px;*/
 }
+
+.sblock-list .card .card-action span.ver-box {
+
+    background: url(../img/id-verified.png) no-repeat left 10px;
+}
+.sblock-list .card .card-action span.not-ver-box {
+
+    background: url(../img/id-not-verified.png) no-repeat left 10px;
+}
+
+
 .sblock-list .card .card-action a:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating).cont-box {
     float: right;
     padding: 8px 14px;

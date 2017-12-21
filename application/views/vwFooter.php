@@ -157,12 +157,26 @@ $this->load->view('common/vwJS');
         });
     }
 
-    function get_cities(state_name) {
+    function get_cities_by_name(state_name) {
         $.ajax({
             url: "<?php echo base_url('cities/get_cities_by_name'); ?>",
             type: "post",
             data: {
                 state_name: state_name
+            },
+            success: function (data) {
+                $("#city_name").empty().html('');
+                $("#city_name").append(data);
+                $('#city_name').material_select();
+            }
+        });
+    }
+        function get_cities(state_id) {
+        $.ajax({
+            url: "<?php echo base_url('cities/get_cities'); ?>",
+            type: "post",
+            data: {
+                state_id: state_id
             },
             success: function (data) {
                 $("#city_name").empty().html('');

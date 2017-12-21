@@ -35,7 +35,7 @@
                             </div>
                             <div class="row mb-0">
                                 <div class="input-field col s7">
-                                    <select name="state_name" id="state_name" class="form-control" onchange="get_cities(this.value);">
+                                    <select name="state_name" id="state_name" class="form-control" onchange="get_cities_by_name(this.value);">
                                         <option value="">Select State</option>
                                     </select>
                                 </div>

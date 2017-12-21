@@ -68,7 +68,7 @@
                             echo "<input type='checkbox' value='".$i."' class='filled-in results-filter-provider-class' id='star" . $i . "' />";
                             echo "<label for='star" . $i . "'><span class='rating'>";
                             for ($j = 1; $j <= 5; $j++) {
-                                echo "<span class='star" . (($j == $i) ? ' active' : '') . "'></span>";
+                                echo "<span class='star" . (($j <= $i) ? ' active' : '') . "'></span>";
                             }
                             echo "</span></label>";
                         }
